@@ -1,0 +1,86 @@
+/**
+ * The wordmark. Vega's has no logo artwork on file, so the mark is drawn:
+ * Bodoni capitals with the gold glint in place of the apostrophe.
+ *
+ * For most of this product's life the mark was drawn as SVG text because
+ * there was no logo, and "no crest is a complete answer". There is one
+ * now, so this component became the single place it renders: every
+ * consumer (site loaders, the menu, the admin sidebar, the login screen,
+ * the document letterhead, the portals) picks it up from here.
+ *
+ * The image bakes in the AUTO INVESTMENT sub-line, so `withSubline` no
+ * longer changes what renders; it is kept so call sites did not need to
+ * change. `tone` still matters, differently than before: the gold reads
+ * on dark and light surfaces alike, and a printed document must survive
+ * a photocopier (DESIGN.md), so `tone="dark"`, the value light-surface
+ * and print consumers already pass, serves the ink version.
+ */
+
+import { brand } from "@/lib/dealership-config";
+import StarGlint from "@/components/site/shared/StarGlint";
+
+type Props = {
+  /** Rendered width in px. Height follows the image's aspect. */
+  width?: number;
+  /** `light` for dark surfaces (gold), `dark` for light/print (ink). */
+  tone?: "light" | "dark";
+  /** Kept for call-site compatibility; the sub-line is part of the mark. */
+  withSubline?: boolean;
+  className?: string;
+  /** Accessible name. Omit when adjacent visible text already names it. */
+  title?: string;
+};
+
+/** The delivered artwork's intrinsic proportions. */
+const ASPECT = 1925 / 473;
+
+export default function Wordmark({
+  width = 196,
+  tone = "light",
+  className,
+  title,
+}: Props) {
+  const height = Math.round(width / ASPECT);
+  const src = brand.wordmarkArtwork[tone];
+  if (!src) {
+    // No artwork on file: draw the mark. "VEGA" + the gold glint for the
+    // apostrophe + "S", with the sub-line under it, as on the public site.
+    // Ink on print surfaces (`tone="dark"`), ivory on screen.
+    const ink = tone === "light" ? "#f3efe7" : "var(--tj-ink)";
+    const size = width / 6.4;
+    const letters = brand.wordmark.replace(/[’']/g, "");
+    const glintAt = brand.wordmark.search(/[’']/);
+    return (
+      <span className={className} role="img" aria-label={title ?? brand.full}
+        style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", minWidth: width, color: ink }}>
+        <span style={{ display: "inline-flex", alignItems: "flex-start", fontFamily: "var(--font-display)", fontWeight: 500, fontSize: size, lineHeight: 1, letterSpacing: "0.14em" }}>
+          {glintAt > 0 ? letters.slice(0, glintAt) : letters}
+          {glintAt > 0 ? <StarGlint size={Math.round(size * 0.46)} color={tone === "dark" ? "currentColor" : "#d6b77a"} className="vega-glint" /> : null}
+          {glintAt > 0 ? letters.slice(glintAt) : null}
+        </span>
+        {brand.subline ? (
+          <span style={{ display: "block", marginTop: 6, fontFamily: "var(--font-body)", fontSize: Math.max(8, Math.round(width / 22)), letterSpacing: ".28em", textTransform: "uppercase", whiteSpace: "nowrap", opacity: 0.7 }}>
+            {brand.subline}
+          </span>
+        ) : null}
+      </span>
+    );
+  }
+
+  return (
+    // Plain img on purpose: this renders inside loaders, print letterheads
+    // and portals where the optimizer's markup has no business.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      width={width}
+      height={height}
+      alt={title ?? brand.full}
+      // No inline display: consumers hide/show the mark responsively with
+      // classes (the site header renders a mobile/desktop pair), and an
+      // inline `display: block` would override `hidden` and draw both.
+      className={className}
+      style={{ width, height }}
+    />
+  );
+}
