@@ -1890,8 +1890,8 @@ select option:hover {
   --tj-line: #2c2b28;
   --tj-muted: #9b968d;
   --tj-muted-light: #88837a;
-  --tj-copper: #d6b77a;
-  --tj-copper-light: #e2c68e;
+  --tj-copper: #d9a54e;
+  --tj-copper-light: #f1d08a;
   --tj-cream-warm: #18181b;
   /* The closed sign. Rust on cream; a lighter rust on graphite, because
      #9C4221 measures 3.02 there against a 4.5 requirement. */
@@ -2018,8 +2018,8 @@ select option:hover {
     --tj-line: #2c2b28;
     --tj-muted: #9b968d;
     --tj-muted-light: #88837a;
-    --tj-copper: #d6b77a;
-    --tj-copper-light: #e2c68e;
+    --tj-copper: #d9a54e;
+    --tj-copper-light: #f1d08a;
     --tj-cream-warm: #18181b;
     --tj-closed: #E8A48B;
   /* #B3261E measures 2.6 on graphite. This is the same hue lifted to 5.9:1. */
@@ -2040,8 +2040,8 @@ select option:hover {
   --tj-line: #2c2b28;
   --tj-muted: #9b968d;
   --tj-muted-light: #88837a;
-  --tj-copper: #d6b77a;
-  --tj-copper-light: #e2c68e;
+  --tj-copper: #d9a54e;
+  --tj-copper-light: #f1d08a;
   --tj-cream-warm: #18181b;
   --tj-closed: #E8A48B;
   /* #B3261E measures 2.6 on graphite. This is the same hue lifted to 5.9:1. */

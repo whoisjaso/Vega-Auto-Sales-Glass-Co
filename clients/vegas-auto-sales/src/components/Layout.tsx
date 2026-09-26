@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { business, isOpenNow } from '../data/business';
-import { StarGlint, Wordmark } from './Brand';
+import { LoneStar, Wordmark } from './Brand';
 import { Loader } from './Loader';
 
 const NAV = [
@@ -89,6 +89,7 @@ function Header() {
 function Footer() {
   return (
     <footer className="footer">
+      <div className="tricolor" aria-hidden="true" />
       <div className="container footer__grid">
         <div className="footer__brand">
           <Wordmark />
@@ -135,7 +136,7 @@ function Footer() {
       </div>
       <div className="container footer__base">
         <span>
-          <StarGlint size={10} /> © {new Date().getFullYear()} {business.name} All rights reserved.
+          <LoneStar size={11} /> © {new Date().getFullYear()} {business.name} All rights reserved.
         </span>
         <span className="muted">
           Brand names referenced describe pre-owned vehicles we sell; Vega’s is an independent dealer. Prices exclude tax, title, license and fees.

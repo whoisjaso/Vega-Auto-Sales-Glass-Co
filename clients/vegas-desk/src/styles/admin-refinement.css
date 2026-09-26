@@ -64,7 +64,8 @@
     min-height: 44px;
   }
 
-  .tj-admin :is(.ed-admin-brand, .ed-access-mark) img {
+  /* Vega's emblem is full colour and must never be flattened to white. */
+  .tj-admin :is(.ed-admin-brand, .ed-access-mark) img:not([src*="/brand/vegas-logo"]) {
     filter: var(--admin-brand-filter, none);
   }
 

@@ -40,7 +40,7 @@ function Plain({ title, note }: { title: string; note: string }) {
   return (
     <main className="ed-sign ed-sign-plain">
       <div className="ed-sign-plain-card">
-        <Wordmark width={160} tone="dark" withSubline />
+        <Wordmark width={160} tone="dark" withSubline emblem />
         <h1 className="ed-sign-title">{title}</h1>
         <p className="ed-sign-lead">{note}</p>
         <p className="ed-sign-fine">

@@ -94,7 +94,7 @@ export default function CeremonyClient({
     return (
       <main className="ed-sign" data-sign-stage="cover">
         <header className="ed-sign-head">
-          <Wordmark width={140} tone="dark" withSubline />
+          <Wordmark width={140} tone="dark" withSubline emblem />
         </header>
         <section className="ed-sign-cover">
           <h1 className="ed-sign-title">{canSign ? t.title : t.inkTitle}</h1>
@@ -128,7 +128,7 @@ export default function CeremonyClient({
     return (
       <main className="ed-sign" data-sign-stage="receipt">
         <header className="ed-sign-head">
-          <Wordmark width={140} tone="dark" withSubline />
+          <Wordmark width={140} tone="dark" withSubline emblem />
         </header>
         <section className="ed-sign-cover">
           <span className="ed-sign-receipt-mark" aria-hidden="true">

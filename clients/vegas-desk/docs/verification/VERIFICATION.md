@@ -73,6 +73,14 @@ button uses, then rasterised (`packet-pages/`) and read (`packet-checks.txt`):
 - **No invented facts:** the legal name, licence and website print as
   `[Not set: …]`, and the dev host appears on no document.
 
+## After the walks: the emblem
+
+The owner then supplied the logo. The accent moved from `#d6b77a` to the
+emblem's gold `#d9a54e` (`rgb(217, 165, 78)`), the emblem now sits beside the
+wordmark in the sidebar, on the login screen and in the signing ceremony, and
+it is the favicon. The walks above ran on the earlier gold; the static checks
+(tsc, 1,396 tests, build) were re-run green after the change.
+
 ## Deviations from the SOP, on purpose
 
 - **Sale language:** required with no default (the SOP's rule). The

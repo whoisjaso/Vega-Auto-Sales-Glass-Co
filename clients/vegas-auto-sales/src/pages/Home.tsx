@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { StarGlint } from '../components/Brand';
+import { LoneStar, StarGlint } from '../components/Brand';
 import { CarSilhouette } from '../components/CarSilhouette';
 import { GlassReveal } from '../components/GlassReveal';
 import { VehicleCard } from '../components/VehicleCard';
@@ -15,7 +15,7 @@ function Hero() {
   return (
     <section className="hero">
       <div className="hero__sky" aria-hidden="true">
-        <StarGlint size={28} className="hero__vega" />
+        <LoneStar size={30} className="hero__vega" />
       </div>
       <div className="container hero__inner">
         <p className="eyebrow hero__eyebrow">Pre-owned automobiles · Auto glass · Houston</p>
@@ -58,7 +58,7 @@ function ProofStrip() {
         <div className="proof__item">
           <strong>
             {business.rating.score}
-            <StarGlint size={12} className="gold" />
+            <LoneStar size={13} className="gold" />
           </strong>
           <span>{business.rating.count} Google reviews</span>
         </div>
@@ -158,7 +158,7 @@ function Marquee() {
         {row.map((m, i) => (
           <span key={i} className="marquee__item">
             {m}
-            <StarGlint size={10} className="gold" />
+            <LoneStar size={11} className="gold" />
           </span>
         ))}
       </div>
@@ -264,7 +264,7 @@ function Reviews() {
         <div className="quotes">
           {business.reviews.map((r, i) => (
             <figure key={r.author} className="quote reveal" style={{ transitionDelay: `${i * 0.1}s` }}>
-              <StarGlint size={16} className="gold" />
+              <LoneStar size={17} className="gold" />
               <blockquote>“{r.quote}”</blockquote>
               {'translation' in r && r.translation && <p className="muted quote__tr">{r.translation}</p>}
               <figcaption>
@@ -324,8 +324,8 @@ export function VisitBlock() {
           <svg viewBox="0 0 400 320">
             <defs>
               <radialGradient id="map-glow" cx="0.5" cy="0.5" r="0.5">
-                <stop offset="0" stopColor="#d6b77a" stopOpacity="0.35" />
-                <stop offset="1" stopColor="#d6b77a" stopOpacity="0" />
+                <stop offset="0" stopColor="#d9a54e" stopOpacity="0.35" />
+                <stop offset="1" stopColor="#d9a54e" stopOpacity="0" />
               </radialGradient>
             </defs>
             <g stroke="#2b2c30" strokeWidth="1">
@@ -341,8 +341,8 @@ export function VisitBlock() {
             <path d="M300 -10 C300 120 290 220 250 330" stroke="#3d3f44" strokeWidth="10" fill="none" />
             <text x="40" y="84" className="map__label" transform="rotate(22 40 84)">GALVESTON RD</text>
             <circle cx="198" cy="148" r="70" fill="url(#map-glow)" className="map__pulse" />
-            <circle cx="198" cy="148" r="6" fill="#d6b77a" />
-            <circle cx="198" cy="148" r="14" fill="none" stroke="#d6b77a" strokeOpacity="0.6" className="map__ring" />
+            <circle cx="198" cy="148" r="6" fill="#d9a54e" />
+            <circle cx="198" cy="148" r="14" fill="none" stroke="#d9a54e" strokeOpacity="0.6" className="map__ring" />
             <text x="214" y="136" className="map__pin">VEGA’S</text>
             <text x="214" y="152" className="map__sub">7722 Galveston Rd</text>
           </svg>

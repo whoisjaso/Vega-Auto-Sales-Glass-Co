@@ -1,5 +1,5 @@
 import { brand } from "@/lib/dealership-config";
-import StarGlint from "@/components/site/shared/StarGlint";
+import LoneStar from "@/components/site/shared/LoneStar";
 
 /**
  * The royal cypher: the owner's Gothic triple-J monogram, delivered
@@ -20,6 +20,8 @@ type Props = {
 
 /** The delivered artwork's intrinsic proportions (w:h). */
 const ASPECT = 740 / 1122;
+/** Vega's emblem (public/brand/vegas-logo-sm.png), width over height. */
+const EMBLEM_ASPECT = 1285 / 1006;
 
 export default function Monogram({
   height = 44,
@@ -27,14 +29,15 @@ export default function Monogram({
   className,
   title,
 }: Props) {
-  const width = Math.round(height * ASPECT);
-  const src = brand.monogramArtwork[tone];
-  // No crest on file: the glint alone is Vega's monogram. Gold on screen,
-  // ink for print (a photocopier turns gold to grey).
+  // Vega's has no monogram artwork, so the emblem stands in on screen. Print
+  // (`ink`) keeps the lone star in ink: a photocopier turns the emblem to mud.
+  const emblem = !brand.monogramArtwork[tone] && tone !== "ink" ? brand.logo : null;
+  const src = brand.monogramArtwork[tone] || emblem;
+  const width = Math.round(height * (emblem ? EMBLEM_ASPECT : ASPECT));
   if (!src) {
     return (
       <span className={className} role={title ? "img" : undefined} aria-label={title || undefined} aria-hidden={title ? undefined : true}>
-        <StarGlint size={Math.round(height * 0.72)} color={tone === "ink" ? "var(--tj-ink)" : "#d6b77a"} />
+        <LoneStar size={Math.round(height * 0.72)} color={tone === "ink" ? "var(--tj-ink)" : "#d9a54e"} />
       </span>
     );
   }

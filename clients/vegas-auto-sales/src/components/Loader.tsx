@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StarGlint } from './Brand';
+import { Logo } from './Brand';
 
 const SEEN_KEY = 'vegas.intro.seen';
 
@@ -12,9 +12,9 @@ function alreadySeen(): boolean {
 }
 
 /**
- * Intro sequence: a single point of light (Vega) ignites into a glint, draws
- * the horizon, the wordmark resolves, a sheen passes like light across glass,
- * and the curtain lifts. Plays once per session.
+ * Intro sequence: the emblem rises out of the dark, a Texas tricolour line
+ * draws beneath it, the wordmark resolves, a sheen passes like light across
+ * glass, and the curtain lifts. Plays once per session.
  */
 export function Loader() {
   const [phase, setPhase] = useState<'play' | 'exit' | 'done'>(() => (alreadySeen() ? 'done' : 'play'));
@@ -49,7 +49,7 @@ export function Loader() {
   return (
     <div className={`loader ${phase === 'exit' ? 'loader--exit' : ''}`} role="presentation">
       <div className="loader__stage">
-        <StarGlint size={64} className="loader__star" />
+        <Logo size={240} className="loader__emblem" priority />
         <div className="loader__horizon" />
         <div className="loader__word" aria-hidden="true">
           {letters.map((l, i) => (

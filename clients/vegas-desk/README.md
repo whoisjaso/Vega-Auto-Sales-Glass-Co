@@ -6,9 +6,12 @@ per screen, with every figure computed and nothing typed twice.
 
 It is a port of the desk that runs in production at the reference dealership.
 The routes, step engine, money math, document rules, signing flow and data
-model are unchanged. The look is Vega's: obsidian ground, ivory ink, one
-champagne gold accent, Bodoni Moda headings, Manrope body text and the glint
-wordmark.
+model are unchanged. The look is Vega's, taken from the owner's emblem (the
+gold ring, the Texas flag and the black SS): obsidian ground, ivory ink, the
+emblem's gold (#d9a54e) as the one accent, Bodoni Moda headings, Manrope body
+text, and the emblem beside a drawn "VEGA★S" wordmark. Printed documents keep
+the lone star in ink, because a photocopier turns the emblem to mud. Set
+`NEXT_PUBLIC_BRAND_LOGO` to replace the emblem (default `/brand/vegas-logo-sm.png`).
 
 The public site (`clients/vegas-auto-sales`, Vite) stays as it is. The desk is
 a separate Next.js app, meant to be served at `desk.<domain>`.

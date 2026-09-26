@@ -1,6 +1,7 @@
 /**
- * The wordmark. Vega's has no logo artwork on file, so the mark is drawn:
- * Bodoni capitals with the gold glint in place of the apostrophe.
+ * The wordmark. Vega's has an emblem but no wordmark artwork, so the name is
+ * drawn: Bodoni capitals with the emblem's lone star in place of the
+ * apostrophe. On screen, `emblem` sets the emblem (`brand.logo`) beside it.
  *
  * For most of this product's life the mark was drawn as SVG text because
  * there was no logo, and "no crest is a complete answer". There is one
@@ -17,7 +18,7 @@
  */
 
 import { brand } from "@/lib/dealership-config";
-import StarGlint from "@/components/site/shared/StarGlint";
+import LoneStar from "@/components/site/shared/LoneStar";
 
 type Props = {
   /** Rendered width in px. Height follows the image's aspect. */
@@ -29,16 +30,21 @@ type Props = {
   className?: string;
   /** Accessible name. Omit when adjacent visible text already names it. */
   title?: string;
+  /** Screen only: set the full-colour emblem beside the drawn name. */
+  emblem?: boolean;
 };
 
 /** The delivered artwork's intrinsic proportions. */
 const ASPECT = 1925 / 473;
+/** Vega's emblem (public/brand/vegas-logo-sm.png), width over height. */
+const EMBLEM_ASPECT = 1285 / 1006;
 
 export default function Wordmark({
   width = 196,
   tone = "light",
   className,
   title,
+  emblem = false,
 }: Props) {
   const height = Math.round(width / ASPECT);
   const src = brand.wordmarkArtwork[tone];
@@ -50,12 +56,12 @@ export default function Wordmark({
     const size = width / 6.4;
     const letters = brand.wordmark.replace(/[’']/g, "");
     const glintAt = brand.wordmark.search(/[’']/);
-    return (
-      <span className={className} role="img" aria-label={title ?? brand.full}
+    const name = (
+      <span className={emblem ? undefined : className} role={emblem ? undefined : "img"} aria-label={emblem ? undefined : title ?? brand.full}
         style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", minWidth: width, color: ink }}>
         <span style={{ display: "inline-flex", alignItems: "flex-start", fontFamily: "var(--font-display)", fontWeight: 500, fontSize: size, lineHeight: 1, letterSpacing: "0.14em" }}>
           {glintAt > 0 ? letters.slice(0, glintAt) : letters}
-          {glintAt > 0 ? <StarGlint size={Math.round(size * 0.46)} color={tone === "dark" ? "currentColor" : "#d6b77a"} className="vega-glint" /> : null}
+          {glintAt > 0 ? <LoneStar size={Math.round(size * 0.46)} color={tone === "dark" ? "var(--tj-copper)" : "#d9a54e"} className="vega-glint" /> : null}
           {glintAt > 0 ? letters.slice(glintAt) : null}
         </span>
         {brand.subline ? (
@@ -63,6 +69,17 @@ export default function Wordmark({
             {brand.subline}
           </span>
         ) : null}
+      </span>
+    );
+    if (!emblem || !brand.logo) return name;
+    const emblemHeight = Math.round(size * 2.1);
+    return (
+      <span className={className} role="img" aria-label={title ?? brand.full}
+        style={{ display: "inline-flex", alignItems: "center", gap: Math.round(size * 0.5) }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={brand.logo} alt="" width={Math.round(emblemHeight * EMBLEM_ASPECT)} height={emblemHeight}
+          style={{ width: Math.round(emblemHeight * EMBLEM_ASPECT), height: emblemHeight, flex: "none" }} />
+        {name}
       </span>
     );
   }

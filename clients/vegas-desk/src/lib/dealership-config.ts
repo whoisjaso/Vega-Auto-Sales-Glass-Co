@@ -342,8 +342,8 @@ const HOST = SITE_URL.replace(/^https?:\/\//, "").replace(/\/$/, "");
 const MAIL_HOST = HOST.replace(/^www\./, "");
 
 /**
- * The brand layer. Vega's has no logo artwork on file, so every artwork path
- * is null and the drawn wordmark stands alone.
+ * The brand layer. Vega's has an emblem (`logo`) but no wordmark or monogram
+ * artwork, so the name is drawn and the emblem stands in for the monogram.
  */
 export const brand = {
   wordmarkArtwork: {
@@ -363,8 +363,8 @@ export const brand = {
   wordmark: env(process.env.NEXT_PUBLIC_BRAND_WORDMARK) ?? "VEGA'S",
   subline: env(process.env.NEXT_PUBLIC_BRAND_SUBLINE) ?? "Auto Sales · Glass Co.",
 
-  /** No crest on file. Consumers render the wordmark alone. */
-  logo: env(process.env.NEXT_PUBLIC_BRAND_LOGO),
+  /** The emblem the owner supplied: gold ring, Texas flag, black SS. */
+  logo: env(process.env.NEXT_PUBLIC_BRAND_LOGO) ?? "/brand/vegas-logo-sm.png",
   logoPrint: env(process.env.BRAND_LOGO_PRINT),
 
   /** The website as printed on paper; a marker until the domain is supplied. */
