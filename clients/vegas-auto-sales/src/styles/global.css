@@ -1407,11 +1407,10 @@ html.is-loading .hero * {
 
 .finder__photo {
   position: absolute;
-  right: -6%;
-  bottom: 0;
-  width: 112%;
+  right: -4%;
+  bottom: 6%;
+  width: 108%;
   height: auto;
-  filter: drop-shadow(0 18px 18px rgba(0, 0, 0, 0.14));
 }
 
 .glass-reveal__svg {

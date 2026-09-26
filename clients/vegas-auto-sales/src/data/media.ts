@@ -53,6 +53,10 @@ export const photos: Partial<Record<PhotoSlot, string>> = {
   'glass-windshield': '/photos/glass-windshield.webp',
   'glass-door': '/photos/glass-door.webp',
   'glass-back': '/photos/glass-back.webp',
+  // One frame, cleaned and edited to add the chip, so the compare lines up.
+  'glass-after': '/photos/glass-after.webp',
+  'glass-before': '/photos/glass-before.webp',
+  finder: '/photos/finder.webp',
 };
 
 /** Where each banner's subject sits, so narrow screens crop to it. */
