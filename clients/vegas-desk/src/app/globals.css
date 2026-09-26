@@ -4,12 +4,12 @@
   /* Type. Two faces, no more. The display serif and the fashion serif that
      used to sit here were decoration on a legal document and illegible at
      8.5px on a photocopy. */
-  --font-sans: "Manrope Variable", "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Barlow Semi Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
   /* Kept as aliases so existing .font-serif / .font-accent call sites resolve
      to the one voice instead of falling back to Times. */
-  --font-serif: "Manrope Variable", "Manrope", "Helvetica Neue", Arial, sans-serif;
-  --font-accent: "Manrope Variable", "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Barlow Semi Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-accent: "Barlow Semi Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
 }
 
 /* ============================================================
@@ -1857,13 +1857,14 @@ select option:hover {
   --gutter-mobile: 16px;
   --grid-gap: 28px;
 
-  /* Palette — Vega's: obsidian ground, ivory ink, one champagne gold accent.
+  /* Palette — Vega's, matched to the public site: a pale grey ground, white
+     cards, black ink and black actions. The emblem is the only colour.
      The eight roles: ground --tj-surface, panel --tj-plane, well
      --tj-cream-warm, line --tj-line, ink --tj-ink, muted --tj-muted,
      faint --tj-muted-light, accent --tj-copper. The names are inherited from
      the reference desk; the values are the client's. */
-  --tj-black: #050505;
-  --tj-ink: #f3efe7;
+  --tj-black: #000000;
+  --tj-ink: #0b0b0c;
   --tj-charcoal: #18181b;
   --tj-white: #ffffff;
   /* The raised plane: a card, a panel, an input, a sheet.
@@ -1874,28 +1875,28 @@ select option:hover {
      rather than assumed: swapping --tj-white site wide put the header at 1.07
      contrast and the hero headline at 1.10, both dark on dark.
      Here it is white, so paper renders byte for byte as before. */
-  --tj-plane: #111113;
+  --tj-plane: #ffffff;
 
   /* The inverted plane: a primary action, or a panel that deliberately reads
      as the opposite of the page. Split out from --tj-black because that token
      names a colour and stays put, while this one names a role and has to flip
      when the ground does. Left as black-on-paper it produced a primary button
      measuring 1.03:1 against a dark ground, which is a button nobody can see. */
-  --tj-invert: #f3efe7;
-  --tj-invert-ink: #0b0b0c;
-  --tj-invert-hover: #ffffff;
-  --tj-off-white: #0b0b0c;
-  --tj-warm-white: #0b0b0c;
-  --tj-surface: #0b0b0c;
-  --tj-line: #2c2b28;
-  --tj-muted: #9b968d;
-  --tj-muted-light: #88837a;
-  --tj-copper: #d9a54e;
-  --tj-copper-light: #f1d08a;
-  --tj-cream-warm: #18181b;
+  --tj-invert: #000000;
+  --tj-invert-ink: #ffffff;
+  --tj-invert-hover: #2b2b2d;
+  --tj-off-white: #eeeff2;
+  --tj-warm-white: #eeeff2;
+  --tj-surface: #eeeff2;
+  --tj-line: #d8d8db;
+  --tj-muted: #5b5e61;
+  --tj-muted-light: #626568;
+  --tj-copper: #000000;
+  --tj-copper-light: #3a3a3c;
+  --tj-cream-warm: #e4e5e8;
   /* The closed sign. Rust on cream; a lighter rust on graphite, because
      #9C4221 measures 3.02 there against a 4.5 requirement. */
-  --tj-closed: #E8A48B;
+  --tj-closed: #9C4221;
   /* Money still owed after the buyer drives off.
      Deliberately not the rust above. Rust is this product's accent and appears
      on trade-in credits, lost leads and warning banners, so it says "notice
@@ -1903,9 +1904,9 @@ select option:hover {
      changes what the buyer walks away owing, and it is printed next to a total
      that otherwise reads as settled, so it gets a colour nothing else uses.
      6.31:1 on cream. */
-  --tj-lien: #F08A80;
-  /* Errors and refusals: a warm red that clears AA on obsidian (7:1). */
-  --tj-danger: #EF8F7F;
+  --tj-lien: #B3261E;
+  /* Errors and refusals: a red that clears AA on the pale ground. */
+  --tj-danger: #B00020;
   /* Aliases some ported screens read without ever defining. Pointed at
      Vega's roles so no screen falls back to the reference's paper colours. */
   --ed-ink: var(--tj-ink);
@@ -1916,7 +1917,7 @@ select option:hover {
   --tj-paper: var(--tj-surface);
 
   /* Type */
-  --font-display: "Bodoni Moda Variable", "Bodoni Moda", Didot, Georgia, serif;
+  --font-display: "Barlow Semi Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   /* The display voice for the public pages, and only those.
      The note in @theme records why serifs were removed: they were decoration
      on a legal document and illegible at 8.5px on a photocopy. That reasoning
@@ -1929,8 +1930,8 @@ select option:hover {
      into generated utilities instead of emitting a custom property, so a
      hand written `font-family: var(--font-editorial)` resolved to nothing and
      silently inherited the sans. */
-  --font-editorial: "Bodoni Moda Variable", "Bodoni Moda", Didot, Georgia, serif;
-  --font-body: "Manrope Variable", "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --font-editorial: "Barlow Semi Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Barlow Semi Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --font-figure: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
 
   /* Radius */
@@ -2009,46 +2010,46 @@ select option:hover {
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --tj-surface: #0b0b0c;
-    --tj-plane: #111113;
-    --tj-ink: #f3efe7;
+    --tj-surface: #eeeff2;
+    --tj-plane: #ffffff;
+    --tj-ink: #0b0b0c;
     --tj-charcoal: #18181b;
-    --tj-off-white: #0b0b0c;
-    --tj-warm-white: #0b0b0c;
-    --tj-line: #2c2b28;
-    --tj-muted: #9b968d;
-    --tj-muted-light: #88837a;
-    --tj-copper: #d9a54e;
-    --tj-copper-light: #f1d08a;
-    --tj-cream-warm: #18181b;
-    --tj-closed: #E8A48B;
+    --tj-off-white: #eeeff2;
+    --tj-warm-white: #eeeff2;
+    --tj-line: #d8d8db;
+    --tj-muted: #5b5e61;
+    --tj-muted-light: #626568;
+    --tj-copper: #000000;
+    --tj-copper-light: #3a3a3c;
+    --tj-cream-warm: #e4e5e8;
+    --tj-closed: #9C4221;
   /* #B3261E measures 2.6 on graphite. This is the same hue lifted to 5.9:1. */
-  --tj-lien: #F08A80;
-    --tj-invert: #f3efe7;
-    --tj-invert-ink: #0b0b0c;
-    --tj-invert-hover: #ffffff;
+  --tj-lien: #B3261E;
+    --tj-invert: #000000;
+    --tj-invert-ink: #ffffff;
+    --tj-invert-hover: #2b2b2d;
   }
 }
 
 :root[data-theme="dark"] {
-  --tj-surface: #0b0b0c;
-  --tj-plane: #111113;
-  --tj-ink: #f3efe7;
+  --tj-surface: #eeeff2;
+  --tj-plane: #ffffff;
+  --tj-ink: #0b0b0c;
   --tj-charcoal: #18181b;
-  --tj-off-white: #0b0b0c;
-  --tj-warm-white: #0b0b0c;
-  --tj-line: #2c2b28;
-  --tj-muted: #9b968d;
-  --tj-muted-light: #88837a;
-  --tj-copper: #d9a54e;
-  --tj-copper-light: #f1d08a;
-  --tj-cream-warm: #18181b;
-  --tj-closed: #E8A48B;
+  --tj-off-white: #eeeff2;
+  --tj-warm-white: #eeeff2;
+  --tj-line: #d8d8db;
+  --tj-muted: #5b5e61;
+  --tj-muted-light: #626568;
+  --tj-copper: #000000;
+  --tj-copper-light: #3a3a3c;
+  --tj-cream-warm: #e4e5e8;
+  --tj-closed: #9C4221;
   /* #B3261E measures 2.6 on graphite. This is the same hue lifted to 5.9:1. */
-  --tj-lien: #F08A80;
-  --tj-invert: #f3efe7;
-  --tj-invert-ink: #0b0b0c;
-  --tj-invert-hover: #ffffff;
+  --tj-lien: #B3261E;
+  --tj-invert: #000000;
+  --tj-invert-ink: #ffffff;
+  --tj-invert-hover: #2b2b2d;
 }
 
 /* The ground is painted on the document, not only on a wrapper, so an
@@ -2061,13 +2062,12 @@ body {
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
-/* Vega's accent: the one warm light on the screen. */
 ::selection {
-  background: var(--tj-copper);
-  color: #0b0b0c;
+  background: #000;
+  color: #fff;
 }
 
 
@@ -13677,7 +13677,7 @@ html[data-walk-dir="back"]::view-transition-new(walk-stage) {
   height: 22px;
   border-radius: 50%;
   background: var(--tj-copper);
-  color: #0b0b0c;
+  color: #fff;
   font: 700 13px/22px var(--font-body);
   text-align: center;
   pointer-events: none;

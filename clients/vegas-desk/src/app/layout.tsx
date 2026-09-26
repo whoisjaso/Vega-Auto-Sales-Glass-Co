@@ -1,10 +1,11 @@
 import type { Viewport } from "next";
 import { getLocale } from "next-intl/server";
 import { GeistMono } from "geist/font/mono";
-// Vega's two faces, self hosted from the installed packages so the desk makes
-// no third party font request: Bodoni Moda for display, Manrope for body.
-import "@fontsource-variable/bodoni-moda";
-import "@fontsource-variable/manrope";
+// Vega's one face, the public site's narrow grotesk, self hosted so the desk
+// makes no third party font request.
+import "@fontsource/barlow-semi-condensed/400.css";
+import "@fontsource/barlow-semi-condensed/500.css";
+import "@fontsource/barlow-semi-condensed/600.css";
 import { routePrepaintScript } from "@/lib/route-prepaint";
 import "./globals.css";
 
@@ -12,7 +13,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#0b0b0c",
+  themeColor: "#000000",
   viewportFit: "cover",
 };
 

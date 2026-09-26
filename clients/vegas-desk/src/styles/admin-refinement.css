@@ -3,7 +3,7 @@
    screen media keeps the printed contracts and official forms untouched. */
 @media screen {
   .tj-admin {
-    --font-display: "Bodoni Moda Variable", "Bodoni Moda", Didot, Georgia, serif;
+    --font-display: "Barlow Semi Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
     --radius-small: 6px;
     --radius-button: 6px;
     --radius-card: 10px;
@@ -1003,13 +1003,13 @@
 
 @media screen and (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .tj-admin {
-    --admin-brand-filter: brightness(0) invert(1);
+    --admin-brand-filter: none;
   }
 }
 
 @media screen {
   :root[data-theme="dark"] .tj-admin {
-    --admin-brand-filter: brightness(0) invert(1);
+    --admin-brand-filter: none;
   }
 }
 
@@ -1024,4 +1024,28 @@
 .tj-admin .tj-admin-rail-scroll {
   mask-image: linear-gradient(to bottom, #000 calc(100% - 26px), transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 26px), transparent 100%);
+}
+
+/* Vega's: the rail and the phone tab bar are the public site's black band,
+   carrying the emblem and the wordmark in white. Every role flips inside
+   them, so the nav keeps its own contrast without new rules. */
+@media screen {
+  .tj-admin :is(.ed-admin-rail, .ed-admin-tabs) {
+    --tj-plane: #000000;
+    --tj-surface: #000000;
+    --tj-warm-white: #000000;
+    --tj-off-white: #000000;
+    --tj-cream-warm: #1c1c1e;
+    --tj-ink: #ffffff;
+    --tj-line: #2a2a2c;
+    --tj-muted: #b0b2b4;
+    --tj-muted-light: #a4a6a8;
+    --tj-copper: #ffffff;
+    --tj-copper-light: #e5e6e8;
+    --tj-invert: #ffffff;
+    --tj-invert-ink: #000000;
+    --tj-invert-hover: #e5e6e8;
+    color: #ffffff;
+    background: #000000;
+  }
 }

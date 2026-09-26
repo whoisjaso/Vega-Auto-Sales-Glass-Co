@@ -1,7 +1,7 @@
 /**
  * The wordmark. Vega's has an emblem but no wordmark artwork, so the name is
- * drawn: Bodoni capitals with the emblem's lone star in place of the
- * apostrophe. On screen, `emblem` sets the emblem (`brand.logo`) beside it.
+ * drawn as the public site sets it: "VEGA’S" in wide grotesk capitals. On
+ * screen, `emblem` sets the emblem (`brand.logo`) beside it.
  *
  * For most of this product's life the mark was drawn as SVG text because
  * there was no logo, and "no crest is a complete answer". There is one
@@ -18,7 +18,6 @@
  */
 
 import { brand } from "@/lib/dealership-config";
-import LoneStar from "@/components/site/shared/LoneStar";
 
 type Props = {
   /** Rendered width in px. Height follows the image's aspect. */
@@ -49,20 +48,16 @@ export default function Wordmark({
   const height = Math.round(width / ASPECT);
   const src = brand.wordmarkArtwork[tone];
   if (!src) {
-    // No artwork on file: draw the mark. "VEGA" + the gold glint for the
-    // apostrophe + "S", with the sub-line under it, as on the public site.
-    // Ink on print surfaces (`tone="dark"`), ivory on screen.
-    const ink = tone === "light" ? "#f3efe7" : "var(--tj-ink)";
-    const size = width / 6.4;
-    const letters = brand.wordmark.replace(/[’']/g, "");
-    const glintAt = brand.wordmark.search(/[’']/);
+    // No artwork on file: draw the name as the public site sets it, wide
+    // capitals in the site's grotesk. Ink on print (`tone="dark"` reads the
+    // ink role, which the black rail flips to white), white on dark screens.
+    const ink = tone === "light" ? "#ffffff" : "var(--tj-ink)";
+    const size = width / 7.2;
     const name = (
       <span className={emblem ? undefined : className} role={emblem ? undefined : "img"} aria-label={emblem ? undefined : title ?? brand.full}
         style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", minWidth: width, color: ink }}>
-        <span style={{ display: "inline-flex", alignItems: "flex-start", fontFamily: "var(--font-display)", fontWeight: 500, fontSize: size, lineHeight: 1, letterSpacing: "0.14em" }}>
-          {glintAt > 0 ? letters.slice(0, glintAt) : letters}
-          {glintAt > 0 ? <LoneStar size={Math.round(size * 0.46)} color={tone === "dark" ? "var(--tj-copper)" : "#d9a54e"} className="vega-glint" /> : null}
-          {glintAt > 0 ? letters.slice(glintAt) : null}
+        <span style={{ display: "inline-block", fontFamily: "var(--font-display)", fontWeight: 600, fontSize: size, lineHeight: 1, letterSpacing: "0.42em", marginRight: "-0.42em" }}>
+          {brand.wordmark.replace(/'/g, "’")}
         </span>
         {brand.subline ? (
           <span style={{ display: "block", marginTop: 6, fontFamily: "var(--font-body)", fontSize: Math.max(8, Math.round(width / 22)), letterSpacing: ".28em", textTransform: "uppercase", whiteSpace: "nowrap", opacity: 0.7 }}>
