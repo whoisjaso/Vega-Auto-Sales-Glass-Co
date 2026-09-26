@@ -70,16 +70,34 @@ button uses, then rasterised (`packet-pages/`) and read (`packet-checks.txt`):
 - **Odometer:** identical on every document in a packet (for example,
   118,340 on walk 3's bill of sale, financing contract and 130-U).
 - **Business date:** 09/26/2026 on every document and signature line.
-- **No invented facts:** the legal name, licence and website print as
-  `[Not set: …]`, and the dev host appears on no document.
+- **No invented facts:** the website still prints as `[Not set: …]` (the
+  legal name, licence and county now come from the TxDMV record), and the dev
+  host appears on no document.
 
-## After the walks: the emblem
+## Re-verified on the site theme and the TxDMV facts
 
-The owner then supplied the logo. The accent moved from `#d6b77a` to the
-emblem's gold `#d9a54e` (`rgb(217, 165, 78)`), the emblem now sits beside the
-wordmark in the sidebar, on the login screen and in the signing ceremony, and
-it is the favicon. The walks above ran on the earlier gold; the static checks
-(tsc, 1,396 tests, build) were re-run green after the change.
+The desk was re-dressed to match the public site (pale grey ground, white
+cards, black ink and actions, Barlow Semi Condensed, black rail with the
+emblem), and the legal name, GDN and county were loaded from the TxDMV licence
+record. All five walks were run again at both sizes, every packet signed
+through the ceremony:
+
+| Walk | 1440 | 390 |
+|---|---|---|
+| Cash, out the door | 2 / 2 signed | 2 / 2 signed |
+| Cash with a balance | 2 / 2 signed | 2 / 2 signed |
+| Buy here pay here with a trade-in | 3 / 3 signed | 3 / 3 signed |
+| Bank financing | 2 / 2 signed | 2 / 2 signed |
+| Buyer files | 3 / 3 signed | 3 / 3 signed |
+
+- **Theme assertion** on every walk: current answer border `rgb(0, 0, 0)`,
+  ground `rgb(238, 239, 242)`, headings in Barlow Semi Condensed.
+- **Contrast:** 0 WCAG AA failures on every desk and ceremony screen, all 20
+  runs.
+- **Packet (buy here pay here):** the bill of sale, 130-U and financing
+  contract all print *Constantino Vega DBA Vega's Auto Sales*, GDN P113248 and
+  Harris County, with no Not-set marker for any of them.
+- **Tests:** 1,396 passed.
 
 ## Deviations from the SOP, on purpose
 
