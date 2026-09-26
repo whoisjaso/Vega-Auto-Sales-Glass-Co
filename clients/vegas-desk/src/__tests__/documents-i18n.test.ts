@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getDocStrings, resolveLocale } from '../lib/documents/i18n';
+import { dealership } from '../lib/dealership-config';
 
 describe('getDocStrings', () => {
   it('returns English strings for "en"', () => {
@@ -50,8 +51,8 @@ describe('getDocStrings', () => {
 
   it('has shared section with dealer info', () => {
     const strings = getDocStrings('en');
-    // No legal name supplied yet: the document prints the marker, never a guess.
-    expect(strings.shared.dealerName).toBe('[Not set: dealer legal name]');
+    // The licensee on the TxDMV record, read from the one config, never typed here.
+    expect(strings.shared.dealerName).toBe(dealership.legalName);
     expect(strings.shared.buyerSignature).toBe('Buyer Signature');
   });
 

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PDFDocument } from "pdf-lib";
+import { dealership } from "@/lib/dealership-config";
 import {
   BUYERS_GUIDE_AS_IS_BOX,
   BUYERS_GUIDE_AS_IS_BOX_ES,
@@ -47,7 +48,7 @@ describe("buyers guide PDF", () => {
     expect(pageOne).toContain("ODDPAGEVIN1234567");
     expect(pageTwo).not.toContain("OddPageMake");
     expect(pageTwo).not.toContain("ODDPAGEVIN1234567");
-    expect(pageThree).toContain("[Not set: dealer legal name]");
+    expect(pageThree).toContain(dealership.legalName!);
     expect(pageThree).toContain("Sales Desk");
   }, 30000);
 
@@ -97,7 +98,7 @@ describe("buyers guide PDF", () => {
     expect(pageOne).toContain("GU");
     expect(pageOne).toContain("MarcaPrueba");
     expect(pageOne).toContain("SPANISHVIN1234567");
-    expect(pageThree).toContain("[Not set: dealer legal name]");
+    expect(pageThree).toContain(dealership.legalName!);
     expect(pageThree).toContain("Oficina de Ventas");
 
     expect(buildBuyersGuideFilename({ year: "2026", make: "Marca", model: "Modelo", vin: "SPANISHVIN1234567" }, "es")).toContain("-es.pdf");

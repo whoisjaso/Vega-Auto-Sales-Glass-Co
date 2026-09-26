@@ -9,6 +9,10 @@
  * - values visible on the business's own public listings (Facebook page,
  *   Google Business listing via Birdeye, MapQuest, Waze) are filled in and
  *   marked PUBLIC, pending the owner's confirmation;
+ * - values on the state's licence record are filled in and marked TXDMV:
+ *   the Independent (GDN) Motor Vehicle Dealers List, data current as of
+ *   09/26/2026 (licence P113248, Active, expires 01/31/2027, Harris County,
+ *   7722 Galveston Rd, (713) 941-1622);
  * - every other fact is `null`. Screens say it is missing, previews print a
  *   visible "Not set" marker in its place, and filing a document is refused
  *   until it is supplied (see `missingDealerFacts`).
@@ -71,8 +75,11 @@ export const dealership = {
   // PUBLIC: the name on the Facebook page and the Google listing.
   name: env(process.env.NEXT_PUBLIC_DEALER_NAME) ?? "Vega's Auto Sales & Glass Co.",
   shortName: env(process.env.NEXT_PUBLIC_DEALER_SHORT_NAME) ?? "Vega's",
-  /** The entity on the dealer licence. Not supplied: ask the owner. */
-  legalName: env(process.env.NEXT_PUBLIC_DEALER_LEGAL_NAME) as string | null,
+  /**
+   * TXDMV: the licence is held by Constantino Vega (business name) doing
+   * business as VEGA'S AUTO SALES (DBA).
+   */
+  legalName: (env(process.env.NEXT_PUBLIC_DEALER_LEGAL_NAME) ?? "Constantino Vega DBA Vega's Auto Sales") as string | null,
   url: SITE_URL,
 
   googleSiteVerification: env(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION) ?? undefined,
@@ -98,8 +105,11 @@ export const dealership = {
   /** Not supplied: ask the owner. */
   email: env(process.env.NEXT_PUBLIC_DEALER_EMAIL),
 
-  /** Texas GDN (General Distinguishing Number). Not supplied: ask the owner. */
-  license: env(process.env.NEXT_PUBLIC_DEALER_LICENSE),
+  /**
+   * TXDMV: Texas GDN (General Distinguishing Number), Active, licence type
+   * Motor Vehicle, expires 01/31/2027. Renewal is the owner's to track.
+   */
+  license: env(process.env.NEXT_PUBLIC_DEALER_LICENSE) ?? "P113248",
 
   /** Texas salvage vehicle dealer licence (Occ. Code ch. 2302), when held. */
   salvageDealerLicense: env(process.env.NEXT_PUBLIC_SALVAGE_DEALER_LICENSE),
@@ -130,8 +140,8 @@ export const dealership = {
     oneLine: `${env(process.env.NEXT_PUBLIC_DEALER_STREET) ?? "7722 Galveston Rd"}, ${env(process.env.NEXT_PUBLIC_DEALER_CITY) ?? "Houston"}, ${env(process.env.NEXT_PUBLIC_DEALER_STATE) ?? "TX"} ${env(process.env.NEXT_PUBLIC_DEALER_ZIP) ?? "77034"}`,
   },
 
-  /** The county the 130-U names for the dealer. Not supplied: ask the owner. */
-  county: env(process.env.NEXT_PUBLIC_DEALER_COUNTY),
+  /** TXDMV: the county on the dealer licence record, which the 130-U names. */
+  county: env(process.env.NEXT_PUBLIC_DEALER_COUNTY) ?? "Harris",
 
   /**
    * The business clock. Every date on a document or signature is the business

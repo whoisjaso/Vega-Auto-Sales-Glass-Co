@@ -2,6 +2,9 @@
 export const business = {
   name: "Vega's Auto Sales & Glass Co.",
   shortName: "Vega's",
+  // TxDMV Independent (GDN) Motor Vehicle Dealers List, current 09/26/2026.
+  legalName: "Constantino Vega DBA Vega's Auto Sales",
+  dealerLicense: 'P113248',
   phoneDisplay: '(713) 941-1622',
   phoneHref: 'tel:+17139411622',
   smsHref: 'sms:+17139411622',

@@ -37,11 +37,14 @@ Every dealer fact is in `src/lib/dealership-config.ts` and nowhere else. A
 guard test fails if one is typed anywhere else, or if any fact from the
 reference dealership appears.
 
-- **Filled from Vega's public listings, needing the owner's confirmation:**
-  trading name, address, phone, hours and time zone.
-- **`null` until the owner supplies them:** legal name, dealer licence (GDN),
-  county, documentary fee, authorised signer, website domain, email, payment
-  destinations and SMS provider.
+- **From the Texas DMV licence record** (Independent GDN dealer list, current
+  09/26/2026): legal name *Constantino Vega DBA Vega's Auto Sales*, GDN
+  **P113248** (Active, expires 01/31/2027), county **Harris**. The record
+  also confirms the address and phone.
+- **From Vega's public listings, pending the owner's confirmation:** trading
+  name, hours and time zone.
+- **`null` until the owner supplies them:** documentary fee, authorised
+  signer, website domain, email, payment destinations and SMS provider.
 
 Until a fact is supplied, every screen and document prints
 `[Not set: …]` in its place, and filing a document is refused. The Handle A
@@ -56,24 +59,26 @@ Sale screen lists what is missing.
    role-permission map, the step-data merge and complete-sale functions,
    the public inventory view, realtime on `deals`, and the three **private**
    buckets (`buyer-ids`, `documents`, `title-work`).
-3. **Set secrets in the host:** Supabase URL and keys,
+3. **Renew the GDN before 01/31/2027** and update `NEXT_PUBLIC_DEALER_LICENSE`
+   if the number ever changes.
+4. **Set secrets in the host:** Supabase URL and keys,
    `ADMIN_SESSION_SECRET`, `INTERNAL_RENDER_TOKEN`, and the SMS credentials
    once a provider is chosen.
-4. **Supply the dealer facts** in `.env.example` (`NEXT_PUBLIC_DEALER_*`).
-5. **Confirm the fee and tax lines.** Texas 6.25% tax, $33 title fee and $75
+5. **Supply the remaining dealer facts** in `.env.example` (`NEXT_PUBLIC_DEALER_*`): documentary fee, authorised signer and website domain.
+6. **Confirm the fee and tax lines.** Texas 6.25% tax, $33 title fee and $75
    registration fee are the statutory defaults. The documentary fee is
    Vega's own and must be supplied.
-6. **Confirm the financing rate ceilings** in `src/lib/documents/terms.ts`
+7. **Confirm the financing rate ceilings** in `src/lib/documents/terms.ts`
    (Tex. Fin. Code ch. 348, never below the 18% optional ceiling of §303.009)
    with counsel before selling buy here pay here.
-7. **Upload the dealer's signature** at `/admin/account/signature`. It prints
+8. **Upload the dealer's signature** at `/admin/account/signature`. It prints
    on the dealer line of every document that person files.
-8. **Approve the Spanish documents.** They carry "translation pending counsel
+9. **Approve the Spanish documents.** They carry "translation pending counsel
    review" until the owner records approval. Spanish e-signature stays off
    until then.
-9. **Salvage.** The tow-away path is salvage dealing (Tex. Occ. Code ch. 2302).
+10. **Salvage.** The tow-away path is salvage dealing (Tex. Occ. Code ch. 2302).
    Supply `NEXT_PUBLIC_SALVAGE_DEALER_LICENSE` if Vega's holds that licence.
-10. **Signing texts** stay off (`PAPERWORK_TEXTS_ENABLED=false`) until an SMS
+11. **Signing texts** stay off (`PAPERWORK_TEXTS_ENABLED=false`) until an SMS
     provider and a registered sending campaign exist.
 
 See `docs/verification/` for the five end-to-end walks, the rasterised

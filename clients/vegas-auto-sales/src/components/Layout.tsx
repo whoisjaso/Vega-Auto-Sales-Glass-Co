@@ -170,6 +170,9 @@ function Footer() {
           <Logo size={44} />
           <p>© {new Date().getFullYear()} {business.name}</p>
           <p className="footer__mute">
+            {business.legalName} · Texas Dealer License (GDN) {business.dealerLicense}
+          </p>
+          <p className="footer__mute">
             Brand names describe pre-owned vehicles we sell; Vega’s is an independent dealer. Prices exclude tax, title, license and fees.
           </p>
         </div>
