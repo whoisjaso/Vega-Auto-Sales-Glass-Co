@@ -39,6 +39,17 @@ export const photos: Partial<Record<PhotoSlot, string>> = {
   // Brand image, generated for the site (not a vehicle in stock).
   hero: '/photos/hero-truck.webp',
   'hero-mobile': '/photos/hero-truck-mobile.webp',
+  // Page banners, generated from the image brief (brand images, not stock).
+  inventory: '/photos/inventory.webp',
+  glass: '/photos/glass.webp',
+  financing: '/photos/financing.webp',
+};
+
+/** Where each banner's subject sits, so narrow screens crop to it. */
+export const photoFocus: Partial<Record<PhotoSlot, string>> = {
+  inventory: '72% 60%',
+  glass: '78% 45%',
+  financing: '62% 60%',
 };
 
 /** Where the hero photo's subject sits, so phones crop to it. */

@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { LeadForm } from '../components/LeadForm';
 import { PageHero } from '../components/PageHero';
-import { photos } from '../data/media';
+import { photoFocus, photos } from '../data/media';
 import { currency, priceLabel, vehicleTitle } from '../data/inventory';
 import { getVehicle } from '../lib/inventoryStore';
 import { useReveal } from '../lib/useReveal';
@@ -72,6 +72,7 @@ export function Financing() {
         body="SUV"
         paint="#9ba1a8"
         photo={photos.financing}
+        focus={photoFocus.financing}
       />
 
       <section className="band band--white">

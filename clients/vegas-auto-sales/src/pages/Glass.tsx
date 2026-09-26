@@ -1,7 +1,7 @@
 import { GlassReveal } from '../components/GlassReveal';
 import { LeadForm } from '../components/LeadForm';
 import { PageHero } from '../components/PageHero';
-import { photos } from '../data/media';
+import { photoFocus, photos } from '../data/media';
 import { business } from '../data/business';
 import { useReveal } from '../lib/useReveal';
 
@@ -40,6 +40,7 @@ export function Glass() {
         lede="Auto glass replacement from the same team that sells your next car. We quote clearly, fit carefully and seal it right."
         kind="glass"
         photo={photos.glass}
+        focus={photoFocus.glass}
       >
         <div className="page-hero__cta">
           <a href="#quote" className="btn btn--light">
