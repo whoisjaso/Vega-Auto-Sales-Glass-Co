@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { LeadForm } from '../components/LeadForm';
 import { PageHero } from '../components/PageHero';
 import { photos } from '../data/media';
-import { currency, vehicleTitle } from '../data/inventory';
+import { currency, priceLabel, vehicleTitle } from '../data/inventory';
 import { getVehicle } from '../lib/inventoryStore';
 import { useReveal } from '../lib/useReveal';
 
@@ -96,10 +96,10 @@ export function Financing() {
           </div>
           <div className="form-card reveal">
             <h2 className="h3">Get pre-qualified</h2>
-            {vehicle && <p>For the {vehicleTitle(vehicle)} · {currency(vehicle.price)}</p>}
+            {vehicle && <p>For the {vehicleTitle(vehicle)} · {priceLabel(vehicle)}</p>}
             <LeadForm
               type="pre-qualification"
-              vehicle={vehicle ? `${vehicleTitle(vehicle)} · ${vehicle.stock}` : undefined}
+              vehicle={vehicle ? vehicleTitle(vehicle) + (vehicle.stock ? ` · ${vehicle.stock}` : '') : undefined}
               fields={[
                 { name: 'income', label: 'Monthly income (approx.)', type: 'select', options: ['Under $2,000', '$2,000 – $3,000', '$3,000 – $4,500', '$4,500+'], half: true, required: true },
                 { name: 'down', label: 'Down payment ready', type: 'select', options: ['Under $1,000', '$1,000 – $2,500', '$2,500 – $5,000', '$5,000+'], half: true, required: true },

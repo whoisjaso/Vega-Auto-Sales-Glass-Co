@@ -1,23 +1,30 @@
 export type BodyStyle = 'Coupe' | 'Sedan' | 'SUV' | 'Truck';
 
+/**
+ * One vehicle on the lot. Only year, make, model and body are required, so a
+ * listing can be entered straight from a Facebook post: anything the post
+ * doesn't say is left out and the site simply doesn't show it.
+ */
 export interface Vehicle {
   slug: string;
   year: number;
   make: string;
   model: string;
   trim?: string;
-  price: number;
-  mileage: number;
+  /** Leave out to show "Call for price". */
+  price?: number;
+  mileage?: number;
   body: BodyStyle;
-  exterior: string;
-  /** Hex used to tint the studio silhouette until real photos are uploaded. */
-  paint: string;
-  interior: string;
-  engine: string;
-  transmission: string;
-  drivetrain: string;
-  stock: string;
-  highlights: string[];
+  exterior?: string;
+  /** Hex used to tint the studio silhouette when there is no photo. */
+  paint?: string;
+  interior?: string;
+  engine?: string;
+  transmission?: string;
+  drivetrain?: string;
+  stock?: string;
+  highlights?: string[];
+  /** Real photos, first one is the cover. Files live in public/photos/inventory/. */
   photos?: string[];
   featured?: boolean;
 }
@@ -137,6 +144,13 @@ export const currency = (n: number) =>
   n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
 export const miles = (n: number) => `${n.toLocaleString('en-US')} mi`;
+
+/** The price as shown, or "Call for price" when none is posted. */
+export const priceLabel = (v: Vehicle) => (v.price ? currency(v.price) : 'Call for price');
+
+/** Mileage · drivetrain · colour, skipping whatever isn't known. */
+export const metaLine = (v: Vehicle) =>
+  [v.mileage ? miles(v.mileage) : null, v.drivetrain, v.exterior].filter(Boolean).join(' · ');
 
 /** Rough monthly payment for display only. */
 export function estimatePayment(price: number, down = 0.15, apr = 0.129, months = 48): number {

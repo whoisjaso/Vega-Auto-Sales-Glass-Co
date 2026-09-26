@@ -2,115 +2,50 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CarSilhouette } from '../components/CarSilhouette';
 import { GlassReveal } from '../components/GlassReveal';
-import { IconArrowDown, IconArrowRight, IconPause, IconPlay, IconSearch } from '../components/Icons';
-import { Scene, type SceneKind } from '../components/Scene';
+import { IconArrowDown, IconArrowRight, IconSearch } from '../components/Icons';
+import { Scene } from '../components/Scene';
 import { business, isOpenNow } from '../data/business';
-import { currency, estimatePayment, type BodyStyle } from '../data/inventory';
-import { photos, type PhotoSlot } from '../data/media';
+import { currency, estimatePayment, vehicleTitle, type BodyStyle } from '../data/inventory';
+import { heroFocus, photos } from '../data/media';
 import { getFeatured, getInventory } from '../lib/inventoryStore';
 import { useReveal } from '../lib/useReveal';
 
-const SLIDE_MS = 7000;
-
-interface Slide {
-  slot: PhotoSlot;
-  kind: SceneKind;
-  body?: BodyStyle;
-  paint?: string;
-  title: string[];
-  cta: { label: string; to: string };
-  alt: string;
-}
-
-const SLIDES: Slide[] = [
-  {
-    slot: 'hero-collection',
-    kind: 'studio',
-    body: 'Coupe',
-    paint: '#7a0c13',
-    title: ['The Collection.'],
-    cta: { label: 'Discover the lot', to: '/inventory' },
-    alt: 'A coupe under showroom lights',
-  },
-  {
-    slot: 'hero-glass',
-    kind: 'glass',
-    title: ['Auto glass,', 'fitted right.'],
-    cta: { label: 'Request a quote', to: '/glass' },
-    alt: 'A windshield catching the light',
-  },
-  {
-    slot: 'hero-credit',
-    kind: 'road',
-    body: 'SUV',
-    paint: '#9ba1a8',
-    title: ['Easy credit.', 'Clear terms.'],
-    cta: { label: 'Get pre-qualified', to: '/financing' },
-    alt: 'An SUV on the road at dusk',
-  },
-];
-
+/**
+ * The opening: one fixed photograph, full screen, with the line set low-left.
+ * It does not rotate, so every visitor lands on the same picture.
+ */
 function Hero() {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [reduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const running = !paused && !reduced;
-
-  useEffect(() => {
-    if (!running) return;
-    const t = window.setTimeout(() => setActive((a) => (a + 1) % SLIDES.length), SLIDE_MS);
-    return () => window.clearTimeout(t);
-  }, [active, running]);
-
   return (
-    <section className="hero" aria-roledescription="carousel" aria-label="Highlights">
-      {SLIDES.map((s, i) => (
-        <div
-          key={s.slot}
-          className={`hero__slide ${i === active ? 'is-active' : ''}`}
-          role="group"
-          aria-roledescription="slide"
-          aria-label={`${i + 1} of ${SLIDES.length}`}
-          aria-hidden={i !== active}
-        >
-          <Scene kind={s.kind} body={s.body} paint={s.paint} photo={photos[s.slot]} alt={s.alt} className="hero__scene" />
-          <div className="hero__copy container">
-            <h1 className="hero__title">
-              {s.title.map((line) => (
-                <span key={line}>{line}</span>
-              ))}
-            </h1>
-            <Link to={s.cta.to} className="btn btn--frost" tabIndex={i === active ? 0 : -1}>
-              {s.cta.label}
-            </Link>
-          </div>
+    <section className="hero" aria-label="Welcome">
+      <Scene
+        kind="studio"
+        body="Truck"
+        paint="#141518"
+        photo={photos.hero}
+        photoMobile={photos['hero-mobile']}
+        focus={heroFocus}
+        eager
+        alt="A pickup truck at Vega's Auto Sales"
+        className="hero__scene"
+      />
+      <div className="hero__copy container">
+        <h1 className="hero__title">
+          <span>Trucks, cars & SUVs.</span>
+          <span>Easy credit.</span>
+        </h1>
+        <p className="hero__lede">Pre-owned vehicles and auto glass at 7722 Galveston Road, Houston.</p>
+        <div className="hero__cta">
+          <Link to="/inventory" className="btn btn--light">
+            Explore the inventory
+          </Link>
+          <Link to="/financing" className="btn btn--frost">
+            Get pre-qualified
+          </Link>
         </div>
-      ))}
-
+      </div>
       <a className="hero__down" href="#after-hero" aria-label="Scroll to content">
         <IconArrowDown size={26} />
       </a>
-
-      <div className="hero__controls">
-        <div className="hero__ticks" role="tablist" aria-label="Choose slide">
-          {SLIDES.map((s, i) => (
-            <button
-              key={s.slot}
-              role="tab"
-              aria-selected={i === active}
-              aria-label={`Slide ${i + 1}`}
-              className={`hero__tick ${i === active ? 'is-active' : ''} ${running ? 'is-running' : ''}`}
-              style={{ ['--dur' as string]: `${SLIDE_MS}ms` }}
-              onClick={() => setActive(i)}
-            >
-              <span />
-            </button>
-          ))}
-        </div>
-        <button className="round-btn" onClick={() => setPaused((p) => !p)} aria-label={paused ? 'Play slideshow' : 'Pause slideshow'}>
-          {paused ? <IconPlay size={22} /> : <IconPause size={22} />}
-        </button>
-      </div>
     </section>
   );
 }
@@ -122,7 +57,7 @@ function Teasers() {
       <div className="container teasers">
         {picks.map((v, i) => (
           <Link key={v.slug} to={`/inventory/${v.slug}`} className="tile reveal" style={{ transitionDelay: `${i * 0.07}s` }}>
-            <Scene kind="studio" body={v.body} paint={v.paint} className="tile__scene" />
+            <Scene kind="studio" body={v.body} paint={v.paint} photo={v.photos?.[0]} alt={vehicleTitle(v)} className="tile__scene" />
             <span className="tile__label">
               {v.year} {v.make} {v.model}.
             </span>
@@ -153,18 +88,27 @@ function Range() {
           {RANGE.map((r, i) => {
             const units = all.filter((v) => v.body === r.body);
             if (!units.length) return null;
-            const from = Math.min(...units.map((v) => v.price));
+            const priced = units.map((v) => v.price).filter((p): p is number => !!p);
+            const from = priced.length ? Math.min(...priced) : undefined;
+            const cover = units.find((v) => v.photos?.length);
             return (
               <Link key={r.body} to={`/inventory?body=${r.body}`} className="model reveal" style={{ transitionDelay: `${(i % 2) * 0.08}s` }}>
-                <Scene kind="studio" body={r.body} paint={r.paint} className="model__scene" />
+                <Scene
+                  kind="studio"
+                  body={r.body}
+                  paint={r.paint}
+                  photo={cover?.photos?.[0]}
+                  alt={cover ? vehicleTitle(cover) : ''}
+                  className="model__scene"
+                />
                 <span className="model__sig">{r.name}</span>
                 <span className="model__body">
                   <span className="chips chips--frost">
                     <span className="chip">{units.length} in stock</span>
-                    <span className="chip">From {currency(estimatePayment(from))}/mo</span>
+                    {from && <span className="chip">From {currency(estimatePayment(from))}/mo</span>}
                   </span>
                   <span className="model__line">{r.line}</span>
-                  <span className="model__price">From {currency(from)}*</span>
+                  {from && <span className="model__price">From {currency(from)}*</span>}
                 </span>
                 <span className="arrow-btn" aria-hidden="true">
                   <IconArrowRight size={18} />

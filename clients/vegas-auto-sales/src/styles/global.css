@@ -746,19 +746,7 @@ button {
   overflow: hidden;
 }
 
-.hero__slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 1.2s ease, visibility 0s 1.2s;
-}
 
-.hero__slide.is-active {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 1.2s ease;
-}
 
 .hero__scene {
   position: absolute;
@@ -771,9 +759,9 @@ button {
     linear-gradient(to right, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 55%);
 }
 
-.hero__slide.is-active .scene__set,
-.hero__slide.is-active .scene__photo {
-  animation: settle 9s var(--ease) both;
+.hero .scene__set,
+.hero .scene__photo {
+  animation: settle 6s var(--ease) both;
 }
 
 @keyframes settle {
@@ -804,21 +792,39 @@ button {
   display: block;
 }
 
-.hero__slide.is-active .hero__title span,
-.hero__slide.is-active .hero__copy .btn {
+.hero__title span,
+.hero__lede,
+.hero__cta {
   animation: rise 1s var(--ease) both;
 }
 
-.hero__slide.is-active .hero__title span:nth-child(1) {
+.hero__title span:nth-child(1) {
   animation-delay: 0.25s;
 }
 
-.hero__slide.is-active .hero__title span:nth-child(2) {
+.hero__title span:nth-child(2) {
   animation-delay: 0.35s;
 }
 
-.hero__slide.is-active .hero__copy .btn {
-  animation-delay: 0.5s;
+.hero__lede {
+  animation-delay: 0.45s;
+}
+
+.hero__cta {
+  animation-delay: 0.55s;
+}
+
+.hero__lede {
+  max-width: 520px;
+  margin: -12px 0 28px;
+  font-size: 19px;
+  color: #e6e7e8;
+}
+
+.hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 html.is-loading .hero * {
@@ -860,54 +866,12 @@ html.is-loading .hero * {
   }
 }
 
-.hero__controls {
-  position: absolute;
-  right: var(--gutter);
-  bottom: 24px;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
 
-.hero__ticks {
-  display: flex;
-  gap: 6px;
-}
 
-.hero__tick {
-  width: 38px;
-  height: 28px;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-}
 
-.hero__tick span {
-  position: relative;
-  display: block;
-  height: 2px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.35);
-}
 
-.hero__tick span::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--white);
-  transform: scaleX(0);
-  transform-origin: left;
-}
 
-.hero__tick.is-active span::after {
-  transform: scaleX(1);
-}
 
-.hero__tick.is-active.is-running span::after {
-  animation: fill var(--dur) linear both;
-}
 
 @keyframes fill {
   from {
@@ -2415,13 +2379,7 @@ button.chip--on {
     width: 110%;
   }
 
-  .hero__controls {
-    bottom: 20px;
-  }
 
-  .hero__ticks {
-    display: none;
-  }
 
   .hero__down {
     display: none;

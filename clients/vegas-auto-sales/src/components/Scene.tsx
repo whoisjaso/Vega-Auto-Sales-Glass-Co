@@ -10,6 +10,12 @@ interface Props {
   paint?: string;
   /** A real photograph. When present it replaces the drawn scene. */
   photo?: string;
+  /** Optional portrait crop served to phones. */
+  photoMobile?: string;
+  /** CSS object-position for the photo, e.g. "65% 50%" to keep the subject in frame. */
+  focus?: string;
+  /** Load the photo immediately (the hero). */
+  eager?: boolean;
   alt?: string;
   className?: string;
   children?: ReactNode;
@@ -22,11 +28,21 @@ const WINDSHIELD = 'M40 70 C120 30 360 30 440 70 L468 250 C330 268 150 268 12 25
  * set: a showroom with ceiling strips and a polished floor, a road at dusk
  * with headlight throw, or a windshield catching the sky.
  */
-export function Scene({ kind, body = 'Coupe', paint = '#15161a', photo, alt = '', className = '', children }: Props) {
+export function Scene({ kind, body = 'Coupe', paint = '#15161a', photo, photoMobile, focus, eager = false, alt = '', className = '', children }: Props) {
   return (
     <div className={`scene scene--${kind} ${className}`}>
       {photo ? (
-        <img className="scene__photo" src={photo} alt={alt} />
+        <picture>
+          {photoMobile && <source media="(max-width: 760px)" srcSet={photoMobile} />}
+          <img
+            className="scene__photo"
+            src={photo}
+            alt={alt}
+            style={focus ? { objectPosition: focus } : undefined}
+            loading={eager ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </picture>
       ) : (
         <div className="scene__set" aria-hidden="true">
           <div className="scene__bg" />

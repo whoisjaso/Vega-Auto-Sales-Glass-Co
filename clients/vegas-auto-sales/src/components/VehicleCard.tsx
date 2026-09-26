@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { currency, estimatePayment, miles, vehicleTitle, type Vehicle } from '../data/inventory';
+import { currency, estimatePayment, metaLine, priceLabel, vehicleTitle, type Vehicle } from '../data/inventory';
 import { CarSilhouette } from './CarSilhouette';
 import { IconArrowRight } from './Icons';
 
@@ -11,7 +11,7 @@ export function VehicleStage({ v, large = false }: { v: Vehicle; large?: boolean
         <img src={v.photos[0]} alt={vehicleTitle(v)} loading="lazy" />
       ) : (
         <>
-          <CarSilhouette body={v.body} paint={v.paint} className="stage__car" title={`${v.exterior} ${vehicleTitle(v)}`} />
+          <CarSilhouette body={v.body} paint={v.paint} className="stage__car" title={vehicleTitle(v)} />
           <span className="stage__note">Photos on request</span>
         </>
       )}
@@ -30,13 +30,11 @@ export function VehicleCard({ v, index = 0 }: { v: Vehicle; index?: number }) {
             {v.year} {v.model}
             {v.trim && <span> {v.trim}</span>}
           </h3>
-          <p className="vcard__meta">
-            {miles(v.mileage)} · {v.drivetrain} · {v.exterior}
-          </p>
+          {metaLine(v) && <p className="vcard__meta">{metaLine(v)}</p>}
           <div className="vcard__foot">
             <div>
-              <strong>{currency(v.price)}</strong>
-              <span>est. {currency(estimatePayment(v.price))}/mo</span>
+              <strong>{priceLabel(v)}</strong>
+              {v.price ? <span>est. {currency(estimatePayment(v.price))}/mo</span> : <span>Ask about easy credit</span>}
             </div>
             <span className="arrow-btn arrow-btn--ink" aria-hidden="true">
               <IconArrowRight size={18} />

@@ -3,7 +3,7 @@ import { LeadForm } from '../components/LeadForm';
 import { PageHero } from '../components/PageHero';
 import { VehicleCard, VehicleStage } from '../components/VehicleCard';
 import { business } from '../data/business';
-import { currency, estimatePayment, miles, vehicleTitle } from '../data/inventory';
+import { currency, estimatePayment, miles, priceLabel, vehicleTitle } from '../data/inventory';
 import { getInventory, getVehicle } from '../lib/inventoryStore';
 import { useReveal } from '../lib/useReveal';
 
@@ -23,12 +23,12 @@ export function VehicleDetail() {
   }
 
   const title = vehicleTitle(v);
-  const smsBody = encodeURIComponent(`Hi Vega's, I'm interested in the ${title} (stock ${v.stock}) listed at ${currency(v.price)}.`);
+  const smsBody = encodeURIComponent(`Hi Vega's, I'm interested in the ${title}${v.stock ? ` (stock ${v.stock})` : ''}${v.price ? ` listed at ${currency(v.price)}` : ''}.`);
   const related = getInventory()
     .filter((o) => o.slug !== v.slug && (o.body === v.body || o.make === v.make))
     .slice(0, 3);
-  const specs: [string, string][] = [
-    ['Mileage', miles(v.mileage)],
+  const specs = ([
+    ['Mileage', v.mileage ? miles(v.mileage) : undefined],
     ['Exterior', v.exterior],
     ['Interior', v.interior],
     ['Engine', v.engine],
@@ -36,7 +36,7 @@ export function VehicleDetail() {
     ['Drivetrain', v.drivetrain],
     ['Body', v.body],
     ['Stock #', v.stock],
-  ];
+  ] as [string, string | undefined][]).filter((row): row is [string, string] => !!row[1]);
 
   return (
     <>
@@ -56,8 +56,8 @@ export function VehicleDetail() {
                 {v.trim && <span> {v.trim}</span>}
               </h1>
               <div className="detail__price">
-                <strong>{currency(v.price)}</strong>
-                <span>est. {currency(estimatePayment(v.price))}/mo with approved credit</span>
+                <strong>{priceLabel(v)}</strong>
+                {v.price ? <span>est. {currency(estimatePayment(v.price))}/mo with approved credit</span> : <span>Call or text for today’s price</span>}
               </div>
               <div className="detail__actions">
                 <a className="btn btn--primary btn--block" href={`${business.smsHref}?&body=${smsBody}`}>
@@ -71,7 +71,7 @@ export function VehicleDetail() {
                 </Link>
               </div>
               <ul className="chips chips--outline" aria-label="Highlights">
-                {v.highlights.map((h) => (
+                {(v.highlights ?? []).map((h) => (
                   <li key={h} className="chip">{h}</li>
                 ))}
               </ul>
@@ -98,7 +98,7 @@ export function VehicleDetail() {
               <p>Pick a time and we’ll have it pulled up front, washed and ready.</p>
               <LeadForm
                 type="vehicle-inquiry"
-                vehicle={`${title} · ${v.stock}`}
+                vehicle={v.stock ? `${title} · ${v.stock}` : title}
                 fields={[
                   { name: 'when', label: 'Preferred day', type: 'select', options: ['Today', 'Tomorrow', 'This week', 'Just have questions'], half: true },
                   { name: 'trade', label: 'Trading in?', type: 'select', options: ['No', 'Yes'], half: true },
