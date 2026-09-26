@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { LeadForm } from '../components/LeadForm';
+import { PageHero } from '../components/PageHero';
 import { VehicleCard, VehicleStage } from '../components/VehicleCard';
 import { business } from '../data/business';
 import { currency, estimatePayment, miles, vehicleTitle } from '../data/inventory';
@@ -13,17 +14,11 @@ export function VehicleDetail() {
 
   if (!v) {
     return (
-      <section className="page-hero">
-        <div className="container">
-          <p className="eyebrow">Not found</p>
-          <h1 className="display">
-            This one has <em>already left the lot.</em>
-          </h1>
-          <Link to="/inventory" className="btn btn--gold">
-            Back to the Collection
-          </Link>
-        </div>
-      </section>
+      <PageHero title="This one has already left the lot." kind="studio" body="Coupe" paint="#15171b">
+        <Link to="/inventory" className="btn btn--frost">
+          Back to the Collection
+        </Link>
+      </PageHero>
     );
   }
 
@@ -55,29 +50,29 @@ export function VehicleDetail() {
               <VehicleStage v={v} large />
             </div>
             <aside className="detail__panel">
-              <p className="eyebrow">{v.make}</p>
+              <p className="detail__make">{v.make}</p>
               <h1 className="detail__title">
                 {v.year} {v.model}
-                {v.trim && <em> {v.trim}</em>}
+                {v.trim && <span> {v.trim}</span>}
               </h1>
               <div className="detail__price">
                 <strong>{currency(v.price)}</strong>
-                <span className="muted">est. {currency(estimatePayment(v.price))}/mo with approved credit</span>
+                <span>est. {currency(estimatePayment(v.price))}/mo with approved credit</span>
               </div>
               <div className="detail__actions">
-                <a className="btn btn--gold btn--block" href={`${business.smsHref}?&body=${smsBody}`}>
+                <a className="btn btn--primary btn--block" href={`${business.smsHref}?&body=${smsBody}`}>
                   Text about this car
                 </a>
-                <a className="btn btn--ghost btn--block" href={business.phoneHref}>
+                <a className="btn btn--outline btn--block" href={business.phoneHref}>
                   Call {business.phoneDisplay}
                 </a>
-                <Link className="btn btn--ghost btn--block" to={`/financing?vehicle=${v.slug}`}>
+                <Link className="btn btn--outline btn--block" to={`/financing?vehicle=${v.slug}`}>
                   Get pre-qualified
                 </Link>
               </div>
-              <ul className="ticks ticks--compact">
+              <ul className="chips chips--outline" aria-label="Highlights">
                 {v.highlights.map((h) => (
-                  <li key={h}>{h}</li>
+                  <li key={h} className="chip">{h}</li>
                 ))}
               </ul>
             </aside>
@@ -98,9 +93,9 @@ export function VehicleDetail() {
                 Price excludes tax, title, license and dealer fees. Vehicle history report available on request. Please confirm availability before visiting.
               </p>
             </div>
-            <div className="card reveal">
+            <div className="form-card reveal">
               <h2 className="h3">Schedule a viewing</h2>
-              <p className="muted">Pick a time and we’ll have it pulled up front, washed and ready.</p>
+              <p>Pick a time and we’ll have it pulled up front, washed and ready.</p>
               <LeadForm
                 type="vehicle-inquiry"
                 vehicle={`${title} · ${v.stock}`}
@@ -117,11 +112,9 @@ export function VehicleDetail() {
       </section>
 
       {related.length > 0 && (
-        <section className="section section--tight">
+        <section className="band band--surface">
           <div className="container">
-            <h2 className="display reveal">
-              You may <em>also consider.</em>
-            </h2>
+            <h2 className="band__title band__title--left reveal">You may also consider.</h2>
             <div className="grid grid--3">
               {related.map((r, i) => (
                 <VehicleCard key={r.slug} v={r} index={i} />

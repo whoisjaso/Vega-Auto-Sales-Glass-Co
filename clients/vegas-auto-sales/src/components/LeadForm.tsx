@@ -62,7 +62,7 @@ export function LeadForm({
       <div className="form-success" role="status">
         <div className="form-success__mark" aria-hidden="true" />
         <h3>{successTitle}</h3>
-        <p className="muted">
+        <p>
           During business hours we typically reply within the hour. Need us sooner? Call{' '}
           <a href={business.phoneHref}>{business.phoneDisplay}</a>.
         </p>
@@ -107,7 +107,7 @@ export function LeadForm({
           <textarea name="message" rows={3} placeholder={messagePlaceholder} />
         </label>
       </div>
-      <button className="btn btn--gold btn--block" disabled={state === 'sending'}>
+      <button className="btn btn--primary btn--block" disabled={state === 'sending'}>
         {state === 'sending' ? 'Sending…' : submitLabel}
       </button>
       {state === 'error' && (

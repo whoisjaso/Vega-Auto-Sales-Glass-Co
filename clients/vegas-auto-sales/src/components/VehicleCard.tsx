@@ -1,44 +1,46 @@
 import { Link } from 'react-router-dom';
 import { currency, estimatePayment, miles, vehicleTitle, type Vehicle } from '../data/inventory';
 import { CarSilhouette } from './CarSilhouette';
+import { IconArrowRight } from './Icons';
 
+/** The vehicle on a pale studio sweep, or its first photograph. */
 export function VehicleStage({ v, large = false }: { v: Vehicle; large?: boolean }) {
-  if (v.photos?.length) {
-    return (
-      <div className={`stage ${large ? 'stage--large' : ''}`}>
-        <img src={v.photos[0]} alt={vehicleTitle(v)} loading="lazy" />
-      </div>
-    );
-  }
   return (
     <div className={`stage ${large ? 'stage--large' : ''}`}>
-      <div className="stage__light" />
-      <CarSilhouette body={v.body} paint={v.paint} className="stage__car" title={`${v.exterior} ${vehicleTitle(v)}`} />
-      <div className="stage__floor" />
-      <span className="stage__note">Photos on request</span>
+      {v.photos?.length ? (
+        <img src={v.photos[0]} alt={vehicleTitle(v)} loading="lazy" />
+      ) : (
+        <>
+          <CarSilhouette body={v.body} paint={v.paint} className="stage__car" title={`${v.exterior} ${vehicleTitle(v)}`} />
+          <span className="stage__note">Photos on request</span>
+        </>
+      )}
     </div>
   );
 }
 
 export function VehicleCard({ v, index = 0 }: { v: Vehicle; index?: number }) {
   return (
-    <article className="vcard reveal" style={{ transitionDelay: `${(index % 3) * 0.08}s` }}>
+    <article className="vcard reveal" style={{ transitionDelay: `${(index % 3) * 0.06}s` }}>
       <Link to={`/inventory/${v.slug}`} className="vcard__link">
         <VehicleStage v={v} />
         <div className="vcard__body">
-          <div className="vcard__make eyebrow">{v.make}</div>
+          <p className="vcard__make">{v.make}</p>
           <h3 className="vcard__title">
             {v.year} {v.model}
-            {v.trim && <span className="vcard__trim"> {v.trim}</span>}
+            {v.trim && <span> {v.trim}</span>}
           </h3>
-          <div className="vcard__meta">
-            <span>{miles(v.mileage)}</span>
-            <span>{v.drivetrain}</span>
-            <span>{v.exterior}</span>
-          </div>
-          <div className="vcard__price">
-            <strong>{currency(v.price)}</strong>
-            <span className="muted">est. {currency(estimatePayment(v.price))}/mo</span>
+          <p className="vcard__meta">
+            {miles(v.mileage)} · {v.drivetrain} · {v.exterior}
+          </p>
+          <div className="vcard__foot">
+            <div>
+              <strong>{currency(v.price)}</strong>
+              <span>est. {currency(estimatePayment(v.price))}/mo</span>
+            </div>
+            <span className="arrow-btn arrow-btn--ink" aria-hidden="true">
+              <IconArrowRight size={18} />
+            </span>
           </div>
         </div>
       </Link>

@@ -1,6 +1,7 @@
 import { GlassReveal } from '../components/GlassReveal';
 import { LeadForm } from '../components/LeadForm';
-import { StarGlint } from '../components/Brand';
+import { PageHero } from '../components/PageHero';
+import { photos } from '../data/media';
 import { business } from '../data/business';
 import { useReveal } from '../lib/useReveal';
 
@@ -34,79 +35,74 @@ export function Glass() {
   useReveal();
   return (
     <>
-      <section className="page-hero page-hero--glass">
-        <div className="container split split--center">
-          <div>
-            <p className="eyebrow">The Glass Atelier</p>
-            <h1 className="display display--xl">
-              Nothing between you <em>and the road.</em>
-            </h1>
-            <p className="section__lede">
-              Auto glass replacement from the same team that sells your next car. We quote clearly, fit carefully and seal it right.
-            </p>
-            <div className="hero__cta">
-              <a href="#quote" className="btn btn--gold">
-                Request a Quote
-              </a>
-              <a href={business.phoneHref} className="btn btn--ghost">
-                {business.phoneDisplay}
-              </a>
-            </div>
+      <PageHero
+        title="Nothing between you and the road."
+        lede="Auto glass replacement from the same team that sells your next car. We quote clearly, fit carefully and seal it right."
+        kind="glass"
+        photo={photos['glass-band']}
+      >
+        <div className="page-hero__cta">
+          <a href="#quote" className="btn btn--light">
+            Request a quote
+          </a>
+          <a href={business.phoneHref} className="btn btn--frost">
+            {business.phoneDisplay}
+          </a>
+        </div>
+      </PageHero>
+
+      <section className="band band--black band--tight">
+        <div className="container glass-band__grid">
+          <div className="glass-band__copy reveal">
+            <h2 className="band__title band__title--left">See the difference.</h2>
+            <p>A stone strike spreads fast in Houston heat. Drag across the windshield to compare a cracked pane with a clean replacement.</p>
           </div>
-          <div>
+          <div className="glass-band__demo reveal">
             <GlassReveal />
             <p className="caption">Drag across the glass to compare.</p>
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="band band--white">
         <div className="container">
+          <h2 className="band__title reveal">What we replace</h2>
           <div className="services">
             {SERVICES.map((s, i) => (
               <article key={s.title} className="service reveal" style={{ transitionDelay: `${i * 0.07}s` }}>
-                <StarGlint size={14} className="gold" />
                 <h3>{s.title}</h3>
-                <p className="muted">{s.body}</p>
+                <p>{s.body}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section section--tight">
+      <section className="band band--surface">
         <div className="container">
-          <header className="section__head reveal">
-            <p className="eyebrow">The process</p>
-            <h2 className="display">
-              Four steps to <em>clarity.</em>
-            </h2>
-          </header>
+          <h2 className="band__title reveal">Four steps to a clear view</h2>
           <ol className="steps">
             {STEPS.map(([t, b], i) => (
               <li key={t} className="step reveal" style={{ transitionDelay: `${i * 0.08}s` }}>
                 <span className="step__n">0{i + 1}</span>
                 <h3>{t}</h3>
-                <p className="muted">{b}</p>
+                <p>{b}</p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      <section className="section" id="quote">
+      <section className="band band--white" id="quote">
         <div className="container split">
           <div className="reveal">
-            <p className="eyebrow">Glass quote</p>
-            <h2 className="display">
-              Tell us about <em>the glass.</em>
-            </h2>
-            <p className="section__lede">
+            <h2 className="band__title band__title--left">Tell us about the glass.</h2>
+            <p className="lede">
               We’ll confirm the right part for your vehicle and text back a price. Prefer to talk? Call {business.phoneDisplay}, Monday through Saturday.
             </p>
-            <p className="muted">Bought your car from us? Tell us. We take care of our customers first.</p>
+            <p>Bought your car from us? Tell us. We take care of our customers first.</p>
           </div>
-          <div className="card reveal">
+          <div className="form-card reveal">
             <LeadForm
               type="glass-quote"
               fields={[

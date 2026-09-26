@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { PageHero } from '../components/PageHero';
 import { VehicleCard } from '../components/VehicleCard';
 import type { BodyStyle } from '../data/inventory';
 import { getInventory } from '../lib/inventoryStore';
@@ -52,19 +53,15 @@ export function Inventory() {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <p className="eyebrow">The Collection</p>
-          <h1 className="display display--xl">
-            Every car, <em>in plain sight.</em>
-          </h1>
-          <p className="section__lede">
-            Clear prices, honest miles, and a team that answers the phone. Something caught your eye? Text us the stock number.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="The Collection."
+        lede="Clear prices, honest miles, and a team that answers the phone. Something caught your eye? Text us the stock number."
+        kind="studio"
+        body="Sedan"
+        paint="#15171b"
+      />
 
-      <section className="section section--tight">
+      <section className="band band--white band--tight">
         <div className="container">
           <div className="filters">
             <div className="chips" role="group" aria-label="Body style">
@@ -101,7 +98,7 @@ export function Inventory() {
               </label>
             </div>
           </div>
-          <p className="results muted" aria-live="polite">
+          <p className="results" aria-live="polite">
             {list.length} {list.length === 1 ? 'vehicle' : 'vehicles'}
           </p>
           {list.length ? (
@@ -113,8 +110,8 @@ export function Inventory() {
           ) : (
             <div className="empty">
               <h3>Nothing matches that search yet.</h3>
-              <p className="muted">New vehicles arrive every week. Tell us what you’re looking for and we’ll call when it lands.</p>
-              <button className="btn btn--ghost" onClick={() => setParams({}, { replace: true })}>
+              <p>New vehicles arrive every week. Tell us what you’re looking for and we’ll call when it lands.</p>
+              <button className="btn btn--outline" onClick={() => setParams({}, { replace: true })}>
                 Clear filters
               </button>
             </div>

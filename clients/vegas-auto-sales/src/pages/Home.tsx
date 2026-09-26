@@ -1,352 +1,360 @@
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { LoneStar, StarGlint } from '../components/Brand';
+import { useEffect, useState, type FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { CarSilhouette } from '../components/CarSilhouette';
 import { GlassReveal } from '../components/GlassReveal';
-import { VehicleCard } from '../components/VehicleCard';
+import { IconArrowDown, IconArrowRight, IconPause, IconPlay, IconSearch } from '../components/Icons';
+import { Scene, type SceneKind } from '../components/Scene';
 import { business, isOpenNow } from '../data/business';
-import { currency, estimatePayment } from '../data/inventory';
+import { currency, estimatePayment, type BodyStyle } from '../data/inventory';
+import { photos, type PhotoSlot } from '../data/media';
 import { getFeatured, getInventory } from '../lib/inventoryStore';
 import { useReveal } from '../lib/useReveal';
 
-const MARQUES = ['Porsche', 'Mercedes-Benz', 'BMW', 'Lexus', 'Audi', 'Land Rover', 'Cadillac', 'Toyota', 'Ford', 'Chevrolet', 'Ram', 'GMC'];
+const SLIDE_MS = 7000;
+
+interface Slide {
+  slot: PhotoSlot;
+  kind: SceneKind;
+  body?: BodyStyle;
+  paint?: string;
+  title: string[];
+  cta: { label: string; to: string };
+  alt: string;
+}
+
+const SLIDES: Slide[] = [
+  {
+    slot: 'hero-collection',
+    kind: 'studio',
+    body: 'Coupe',
+    paint: '#7a0c13',
+    title: ['The Collection.'],
+    cta: { label: 'Discover the lot', to: '/inventory' },
+    alt: 'A coupe under showroom lights',
+  },
+  {
+    slot: 'hero-glass',
+    kind: 'glass',
+    title: ['Auto glass,', 'fitted right.'],
+    cta: { label: 'Request a quote', to: '/glass' },
+    alt: 'A windshield catching the light',
+  },
+  {
+    slot: 'hero-credit',
+    kind: 'road',
+    body: 'SUV',
+    paint: '#9ba1a8',
+    title: ['Easy credit.', 'Clear terms.'],
+    cta: { label: 'Get pre-qualified', to: '/financing' },
+    alt: 'An SUV on the road at dusk',
+  },
+];
 
 function Hero() {
-  return (
-    <section className="hero">
-      <div className="hero__sky" aria-hidden="true">
-        <LoneStar size={30} className="hero__vega" />
-      </div>
-      <div className="container hero__inner">
-        <p className="eyebrow hero__eyebrow">Pre-owned automobiles · Auto glass · Houston</p>
-        <h1 className="hero__title">
-          Brilliance,
-          <br />
-          <em>seen clearly.</em>
-        </h1>
-        <p className="hero__lede">
-          Hand-selected cars, trucks and SUVs with easy credit, and precise auto glass replacement. One lot on Galveston Road, one standard for both.
-        </p>
-        <div className="hero__cta">
-          <Link to="/inventory" className="btn btn--gold">
-            Explore the Collection
-          </Link>
-          <Link to="/glass" className="btn btn--ghost">
-            Request a Glass Quote
-          </Link>
-        </div>
-      </div>
-      <div className="hero__car" aria-hidden="true">
-        <CarSilhouette body="Coupe" variant="line" className="hero__car-line" />
-        <CarSilhouette body="Coupe" paint="#111214" className="hero__car-solid" />
-        <div className="hero__sheen" />
-        <StarGlint size={22} className="hero__glint" />
-        <div className="hero__floor" />
-      </div>
-      <div className="hero__scroll" aria-hidden="true">
-        <span />
-      </div>
-    </section>
-  );
-}
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [reduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const running = !paused && !reduced;
 
-function ProofStrip() {
-  const openNow = isOpenNow();
-  return (
-    <section className="proof" aria-label="At a glance">
-      <div className="container proof__row">
-        <div className="proof__item">
-          <strong>
-            {business.rating.score}
-            <LoneStar size={13} className="gold" />
-          </strong>
-          <span>{business.rating.count} Google reviews</span>
-        </div>
-        <div className="proof__item">
-          <strong>Easy credit</strong>
-          <span>Payments that make sense</span>
-        </div>
-        <div className="proof__item">
-          <strong>{openNow ? 'Open now' : 'Mon – Sat'}</strong>
-          <span>9:00 AM – 6:00 PM</span>
-        </div>
-        <div className="proof__item">
-          <strong>Se habla español</strong>
-          <span>Bilingual team</span>
-        </div>
-      </div>
-    </section>
-  );
-}
+  useEffect(() => {
+    if (!running) return;
+    const t = window.setTimeout(() => setActive((a) => (a + 1) % SLIDES.length), SLIDE_MS);
+    return () => window.clearTimeout(t);
+  }, [active, running]);
 
-function TwoCrafts() {
   return (
-    <section className="section">
-      <div className="container">
-        <header className="section__head reveal">
-          <p className="eyebrow">The House of Vega’s</p>
-          <h2 className="display">
-            Two crafts. <em>One standard.</em>
-          </h2>
-          <p className="section__lede">
-            We sell the car, and we can replace the glass you look through. The work is different, but we inspect, price and hand over both the same careful way.
-          </p>
-        </header>
-        <div className="crafts">
-          <Link to="/inventory" className="craft reveal">
-            <div className="craft__art">
-              <CarSilhouette body="SUV" paint="#1b1e24" className="craft__car" />
-            </div>
-            <div className="craft__body">
-              <span className="craft__num">I.</span>
-              <h3>The Collection</h3>
-              <p>Pre-owned cars, trucks and SUVs, from daily sedans to European marques. Each one priced plainly.</p>
-              <span className="link-arrow">View inventory</span>
-            </div>
-          </Link>
-          <Link to="/glass" className="craft reveal" style={{ transitionDelay: '0.1s' }}>
-            <div className="craft__art craft__art--glass">
-              <div className="pane">
-                <div className="pane__sheen" />
-              </div>
-            </div>
-            <div className="craft__body">
-              <span className="craft__num">II.</span>
-              <h3>The Glass Atelier</h3>
-              <p>Windshield, door and back glass replacement, fitted cleanly and sealed properly, for nearly any make.</p>
-              <span className="link-arrow">Get a glass quote</span>
-            </div>
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Featured() {
-  const featured = getFeatured();
-  const total = getInventory().length;
-  return (
-    <section className="section section--tight">
-      <div className="container">
-        <header className="section__head section__head--split reveal">
-          <div>
-            <p className="eyebrow">On the lot</p>
-            <h2 className="display">
-              The <em>Collection.</em>
-            </h2>
+    <section className="hero" aria-roledescription="carousel" aria-label="Highlights">
+      {SLIDES.map((s, i) => (
+        <div
+          key={s.slot}
+          className={`hero__slide ${i === active ? 'is-active' : ''}`}
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${i + 1} of ${SLIDES.length}`}
+          aria-hidden={i !== active}
+        >
+          <Scene kind={s.kind} body={s.body} paint={s.paint} photo={photos[s.slot]} alt={s.alt} className="hero__scene" />
+          <div className="hero__copy container">
+            <h1 className="hero__title">
+              {s.title.map((line) => (
+                <span key={line}>{line}</span>
+              ))}
+            </h1>
+            <Link to={s.cta.to} className="btn btn--frost" tabIndex={i === active ? 0 : -1}>
+              {s.cta.label}
+            </Link>
           </div>
-          <Link to="/inventory" className="link-arrow">
-            All {total} vehicles
-          </Link>
-        </header>
-        <div className="grid grid--4">
-          {featured.map((v, i) => (
-            <VehicleCard key={v.slug} v={v} index={i} />
+        </div>
+      ))}
+
+      <a className="hero__down" href="#after-hero" aria-label="Scroll to content">
+        <IconArrowDown size={26} />
+      </a>
+
+      <div className="hero__controls">
+        <div className="hero__ticks" role="tablist" aria-label="Choose slide">
+          {SLIDES.map((s, i) => (
+            <button
+              key={s.slot}
+              role="tab"
+              aria-selected={i === active}
+              aria-label={`Slide ${i + 1}`}
+              className={`hero__tick ${i === active ? 'is-active' : ''} ${running ? 'is-running' : ''}`}
+              style={{ ['--dur' as string]: `${SLIDE_MS}ms` }}
+              onClick={() => setActive(i)}
+            >
+              <span />
+            </button>
           ))}
         </div>
+        <button className="round-btn" onClick={() => setPaused((p) => !p)} aria-label={paused ? 'Play slideshow' : 'Pause slideshow'}>
+          {paused ? <IconPlay size={22} /> : <IconPause size={22} />}
+        </button>
       </div>
     </section>
   );
 }
 
-function Marquee() {
-  const row = [...MARQUES, ...MARQUES];
+function Teasers() {
+  const picks = getFeatured().slice(0, 3);
   return (
-    <section className="marquee" aria-label="Marques we source">
-      <div className="marquee__track">
-        {row.map((m, i) => (
-          <span key={i} className="marquee__item">
-            {m}
-            <LoneStar size={11} className="gold" />
-          </span>
+    <section className="band band--white" id="after-hero">
+      <div className="container teasers">
+        {picks.map((v, i) => (
+          <Link key={v.slug} to={`/inventory/${v.slug}`} className="tile reveal" style={{ transitionDelay: `${i * 0.07}s` }}>
+            <Scene kind="studio" body={v.body} paint={v.paint} className="tile__scene" />
+            <span className="tile__label">
+              {v.year} {v.make} {v.model}.
+            </span>
+            <span className="arrow-btn" aria-hidden="true">
+              <IconArrowRight size={18} />
+            </span>
+          </Link>
         ))}
       </div>
     </section>
   );
 }
 
-function GlassSection() {
+const RANGE: { body: BodyStyle; name: string; line: string; paint: string }[] = [
+  { body: 'SUV', name: 'SUVs', line: 'Room for the family and the week: two and three rows, AWD and 4WD.', paint: '#e6e3dc' },
+  { body: 'Sedan', name: 'Sedans', line: 'Daily drivers and European comfort: four doors, five seats.', paint: '#1f3a6b' },
+  { body: 'Truck', name: 'Trucks', line: 'Crew cabs ready to work: towing packages, beds and V8 power.', paint: '#4b4f55' },
+  { body: 'Coupe', name: 'Coupes', line: 'Two doors, low roofline: sports cars and grand tourers.', paint: '#8e1018' },
+];
+
+function Range() {
+  const all = getInventory();
   return (
-    <section className="section glass-section">
-      <div className="container split">
-        <div className="reveal">
-          <p className="eyebrow">The Glass Atelier</p>
-          <h2 className="display">
-            A clear view is <em>not optional.</em>
-          </h2>
-          <p className="section__lede">
-            A cracked windshield changes how you see the road. We replace it with properly fitted glass and a clean seal, and we do it at the same address where we sell cars.
-          </p>
-          <ul className="ticks">
-            <li>Windshield replacement</li>
-            <li>Door, vent & quarter glass</li>
-            <li>Back glass & rear windows</li>
-            <li>Cars, trucks, SUVs, work vans</li>
-          </ul>
-          <div className="hero__cta">
-            <Link to="/glass" className="btn btn--gold">
-              Request a Quote
-            </Link>
-            <a href={business.phoneHref} className="btn btn--ghost">
-              Call the shop
+    <section className="band band--black">
+      <div className="container">
+        <h2 className="band__title reveal">Find your fit.</h2>
+        <div className="lineup">
+          {RANGE.map((r, i) => {
+            const units = all.filter((v) => v.body === r.body);
+            if (!units.length) return null;
+            const from = Math.min(...units.map((v) => v.price));
+            return (
+              <Link key={r.body} to={`/inventory?body=${r.body}`} className="model reveal" style={{ transitionDelay: `${(i % 2) * 0.08}s` }}>
+                <Scene kind="studio" body={r.body} paint={r.paint} className="model__scene" />
+                <span className="model__sig">{r.name}</span>
+                <span className="model__body">
+                  <span className="chips chips--frost">
+                    <span className="chip">{units.length} in stock</span>
+                    <span className="chip">From {currency(estimatePayment(from))}/mo</span>
+                  </span>
+                  <span className="model__line">{r.line}</span>
+                  <span className="model__price">From {currency(from)}*</span>
+                </span>
+                <span className="arrow-btn" aria-hidden="true">
+                  <IconArrowRight size={18} />
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+        <p className="band__fine">
+          *Advertised price. Excludes tax, title, license and dealer fees. Monthly figures are estimates at 15% down, 12.9% APR, 48 months, with approved credit.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function VisitCard() {
+  const openNow = isOpenNow();
+  return (
+    <section className="band band--white">
+      <div className="container">
+        <div className="split-card reveal">
+          <div className="split-card__text">
+            <h2>Visit us on Galveston Road</h2>
+            <p>
+              {business.street}, {business.cityLine}. {business.crossStreets}. Walk the lot, sit in the car, or bring yours in for a glass estimate.
+            </p>
+            <p className="split-card__hours">
+              <span className={`status ${openNow ? 'status--open' : ''}`}>
+                <span className="status__dot" />
+                {openNow ? 'Open now' : 'Closed now'}
+              </span>{' '}
+              Mon – Sat, 9 AM – 6 PM
+            </p>
+            <a className="btn btn--light" href={business.mapsHref} target="_blank" rel="noreferrer">
+              Get directions
             </a>
           </div>
+          <Scene kind="dusk" photo={photos.visit} alt="Vega's on Galveston Road" className="split-card__scene" />
         </div>
-        <div className="reveal" style={{ transitionDelay: '0.12s' }}>
+      </div>
+    </section>
+  );
+}
+
+function Finder() {
+  const navigate = useNavigate();
+  const [q, setQ] = useState('');
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    navigate(q.trim() ? `/inventory?q=${encodeURIComponent(q.trim())}` : '/inventory');
+  };
+  return (
+    <section className="band band--white finder">
+      <div className="container finder__grid">
+        <div className="reveal">
+          <h2 className="finder__title">Find your next pre-owned vehicle.</h2>
+          <p className="finder__lede">Search the lot by make, model or colour. Every car is priced plainly, with the monthly estimate beside it.</p>
+          <form className="search" onSubmit={submit} role="search">
+            <label htmlFor="finder-q" className="search__label">
+              Make, model or colour
+            </label>
+            <div className="search__field">
+              <IconSearch size={20} />
+              <input id="finder-q" type="search" placeholder="e.g. Tahoe, BMW, white" value={q} onChange={(e) => setQ(e.target.value)} />
+              <button type="submit" className="btn btn--primary btn--sm">
+                Search
+              </button>
+            </div>
+          </form>
+        </div>
+        <div className="finder__cars" aria-hidden="true">
+          <CarSilhouette body="SUV" paint="#f5f5f4" className="finder__car finder__car--1" />
+          <CarSilhouette body="Sedan" paint="#f5f5f4" className="finder__car finder__car--2" />
+          <CarSilhouette body="Truck" paint="#f5f5f4" className="finder__car finder__car--3" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const GLASS = [
+  { title: 'Windshields', path: 'M20 40 C60 18 180 18 220 40 L234 128 C165 138 75 138 6 128 Z' },
+  { title: 'Door & quarter glass', path: 'M40 130 L40 60 C40 40 60 26 90 26 L200 26 L200 130 Z' },
+  { title: 'Back glass', path: 'M30 44 C80 28 160 28 210 44 L222 118 C160 128 80 128 18 118 Z' },
+];
+
+function GlassBand() {
+  return (
+    <section className="band band--black glass-band">
+      <div className="container glass-band__grid">
+        <div className="glass-band__copy reveal">
+          <h2 className="band__title band__title--left">Auto glass, from the same team.</h2>
+          <p>
+            Windshield, door and back glass for cars, trucks, SUVs and work vans. We confirm the part and the price before any work begins, and seal it properly.
+          </p>
+          <Link to="/glass" className="text-link">
+            Go to Auto Glass <IconArrowRight size={18} />
+          </Link>
+        </div>
+        <div className="glass-band__demo reveal">
           <GlassReveal />
           <p className="caption">Drag across the glass to compare.</p>
         </div>
       </div>
+      <div className="container teasers teasers--dark">
+        {GLASS.map((g, i) => (
+          <Link key={g.title} to="/glass" className="tile tile--glass reveal" style={{ transitionDelay: `${i * 0.07}s` }}>
+            <div className="tile__scene tile__scene--glass" aria-hidden="true">
+              <svg viewBox="0 0 240 150">
+                <defs>
+                  <linearGradient id={`gt-${i}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stopColor="#465b68" />
+                    <stop offset="0.6" stopColor="#141b21" />
+                    <stop offset="1" stopColor="#07090b" />
+                  </linearGradient>
+                  <linearGradient id={`gs-${i}`} x1="0" y1="0" x2="1" y2="0.3">
+                    <stop offset="0" stopColor="#fff" stopOpacity="0" />
+                    <stop offset="0.5" stopColor="#fff" stopOpacity="0.3" />
+                    <stop offset="1" stopColor="#fff" stopOpacity="0" />
+                  </linearGradient>
+                  <clipPath id={`gc-${i}`}>
+                    <path d={g.path} />
+                  </clipPath>
+                </defs>
+                <path d={g.path} fill={`url(#gt-${i})`} stroke="#2a2f34" strokeWidth="5" strokeLinejoin="round" />
+                <g clipPath={`url(#gc-${i})`}>
+                  <rect className="tile__sweep" x="-120" y="0" width="120" height="150" fill={`url(#gs-${i})`} />
+                </g>
+              </svg>
+            </div>
+            <span className="tile__label">{g.title}</span>
+            <span className="arrow-btn" aria-hidden="true">
+              <IconArrowRight size={18} />
+            </span>
+          </Link>
+        ))}
+      </div>
     </section>
   );
 }
 
-function PaymentTeaser() {
-  const [price, setPrice] = useState(18000);
-  const monthly = useMemo(() => estimatePayment(price), [price]);
+function Discover() {
+  const [quote, setQuote] = useState(0);
+  useEffect(() => {
+    const t = window.setInterval(() => setQuote((q) => (q + 1) % business.reviews.length), 6000);
+    return () => window.clearInterval(t);
+  }, []);
+  const r = business.reviews[quote];
   return (
-    <section className="section finance-band">
-      <div className="container split split--center">
-        <div className="reveal">
-          <p className="eyebrow">Financing</p>
-          <h2 className="display">
-            Reasonable payments. <em>Easy credit.</em>
-          </h2>
-          <p className="section__lede">
-            That’s how customers describe buying here. First-time buyers, rebuilding credit, or paid in cash: tell us where you are and we’ll show you the payment before you choose the car.
-          </p>
-          <Link to="/financing" className="btn btn--gold">
-            Get Pre-Qualified
+    <section className="band band--white">
+      <div className="container">
+        <h2 className="band__title reveal">Discover</h2>
+        <div className="teasers">
+          <Link to="/financing" className="tile tile--type reveal">
+            <span className="tile__type">
+              {currency(estimatePayment(18000))}
+              <small>/mo</small>
+            </span>
+            <span className="tile__label">Easy credit</span>
+            <span className="arrow-btn" aria-hidden="true">
+              <IconArrowRight size={18} />
+            </span>
+          </Link>
+          <Link to="/visit" className="tile tile--type tile--type-warm reveal" style={{ transitionDelay: '0.07s' }}>
+            <span className="tile__type">
+              {business.rating.score}
+              <small>/5</small>
+            </span>
+            <span className="tile__label">{business.rating.count} Google reviews</span>
+            <span className="arrow-btn" aria-hidden="true">
+              <IconArrowRight size={18} />
+            </span>
+          </Link>
+          <Link to="/visit" className="tile tile--type tile--type-cool reveal" style={{ transitionDelay: '0.14s' }}>
+            <span className="tile__type">Hola.</span>
+            <span className="tile__label">Se habla español</span>
+            <span className="arrow-btn" aria-hidden="true">
+              <IconArrowRight size={18} />
+            </span>
           </Link>
         </div>
-        <div className="calc reveal" style={{ transitionDelay: '0.1s' }}>
-          <div className="calc__row">
-            <span className="eyebrow">Vehicle price</span>
-            <strong>{currency(price)}</strong>
-          </div>
-          <input
-            type="range"
-            min={6000}
-            max={60000}
-            step={500}
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
-            aria-label="Vehicle price"
-            className="range"
-          />
-          <div className="calc__out">
-            <span className="calc__num">{currency(monthly)}</span>
-            <span className="muted">/ month, estimated</span>
-          </div>
-          <p className="fine">
-            Illustration only: 15% down, 12.9% APR, 48 months. Your rate and terms depend on credit approval.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
 
-function Reviews() {
-  return (
-    <section className="section">
-      <div className="container">
-        <header className="section__head reveal">
-          <p className="eyebrow">From our customers</p>
-          <h2 className="display">
-            {business.rating.score} stars, <em>{business.rating.count} reviews.</em>
-          </h2>
-          <p className="section__lede">
-            {business.rating.fiveStar} of our {business.rating.count} Google reviews are five stars. Here’s what people say.
-          </p>
-        </header>
-        <div className="quotes">
-          {business.reviews.map((r, i) => (
-            <figure key={r.author} className="quote reveal" style={{ transitionDelay: `${i * 0.1}s` }}>
-              <LoneStar size={17} className="gold" />
-              <blockquote>“{r.quote}”</blockquote>
-              {'translation' in r && r.translation && <p className="muted quote__tr">{r.translation}</p>}
-              <figcaption>
-                {r.author} <span className="muted">· {r.source}</span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function VisitBlock() {
-  const openNow = isOpenNow();
-  return (
-    <section className="section visit">
-      <div className="container split split--center">
-        <div className="reveal">
-          <p className="eyebrow">Visit the lot</p>
-          <h2 className="display">
-            7722 <em>Galveston Road.</em>
-          </h2>
-          <p className="section__lede">
-            In Edgebrook, {business.crossStreets.toLowerCase()}. Come see the cars in person, bring your vehicle in for a glass estimate, or just come by and talk it through.
-          </p>
-          <dl className="facts">
-            <div>
-              <dt>Hours</dt>
-              <dd>
-                Mon – Sat, 9 AM – 6 PM <span className={`status ${openNow ? 'status--open' : ''}`}><span className="status__dot" />{openNow ? 'Open now' : 'Closed now'}</span>
-                <br />
-                <span className="muted">Sunday closed</span>
-              </dd>
-            </div>
-            <div>
-              <dt>Phone</dt>
-              <dd>
-                <a href={business.phoneHref}>{business.phoneDisplay}</a>
-              </dd>
-            </div>
-            <div>
-              <dt>We accept</dt>
-              <dd>{business.payments.join(' · ')}</dd>
-            </div>
-          </dl>
-          <div className="hero__cta">
-            <a href={business.mapsHref} target="_blank" rel="noreferrer" className="btn btn--gold">
-              Get Directions
-            </a>
-            <a href={business.smsHref} className="btn btn--ghost">
-              Text Us
-            </a>
-          </div>
-        </div>
-        <div className="map reveal" aria-hidden="true">
-          <svg viewBox="0 0 400 320">
-            <defs>
-              <radialGradient id="map-glow" cx="0.5" cy="0.5" r="0.5">
-                <stop offset="0" stopColor="#d9a54e" stopOpacity="0.35" />
-                <stop offset="1" stopColor="#d9a54e" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-            <g stroke="#2b2c30" strokeWidth="1">
-              {Array.from({ length: 11 }).map((_, i) => (
-                <line key={`h${i}`} x1="0" x2="400" y1={i * 32} y2={i * 32 + 14} />
-              ))}
-              {Array.from({ length: 13 }).map((_, i) => (
-                <line key={`v${i}`} y1="0" y2="320" x1={i * 34} x2={i * 34 - 18} />
-              ))}
-            </g>
-            <path d="M-10 40 C120 110 250 170 420 290" stroke="#6b6d72" strokeWidth="6" fill="none" />
-            <path d="M-10 40 C120 110 250 170 420 290" stroke="#0b0b0c" strokeWidth="1.2" strokeDasharray="6 8" fill="none" />
-            <path d="M300 -10 C300 120 290 220 250 330" stroke="#3d3f44" strokeWidth="10" fill="none" />
-            <text x="40" y="84" className="map__label" transform="rotate(22 40 84)">GALVESTON RD</text>
-            <circle cx="198" cy="148" r="70" fill="url(#map-glow)" className="map__pulse" />
-            <circle cx="198" cy="148" r="6" fill="#d9a54e" />
-            <circle cx="198" cy="148" r="14" fill="none" stroke="#d9a54e" strokeOpacity="0.6" className="map__ring" />
-            <text x="214" y="136" className="map__pin">VEGA’S</text>
-            <text x="214" y="152" className="map__sub">7722 Galveston Rd</text>
-          </svg>
-        </div>
+        <figure className="quote reveal" aria-live="polite">
+          <blockquote key={quote}>“{r.quote}”</blockquote>
+          {'translation' in r && r.translation && <p className="quote__tr">{r.translation}</p>}
+          <figcaption>
+            {r.author}, via {r.source}
+          </figcaption>
+        </figure>
       </div>
     </section>
   );
@@ -357,14 +365,12 @@ export function Home() {
   return (
     <>
       <Hero />
-      <ProofStrip />
-      <TwoCrafts />
-      <Featured />
-      <Marquee />
-      <GlassSection />
-      <PaymentTeaser />
-      <Reviews />
-      <VisitBlock />
+      <Teasers />
+      <Range />
+      <VisitCard />
+      <Finder />
+      <GlassBand />
+      <Discover />
     </>
   );
 }

@@ -1,146 +1,178 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { business, isOpenNow } from '../data/business';
-import { LoneStar, Wordmark } from './Brand';
+import { Logo, Wordmark } from './Brand';
+import { IconArrowRight, IconArrowUp, IconChat, IconClose, IconMenu, IconPhone, IconPin } from './Icons';
 import { Loader } from './Loader';
 
 const NAV = [
-  { to: '/inventory', label: 'The Collection' },
-  { to: '/glass', label: 'Glass Atelier' },
-  { to: '/financing', label: 'Financing' },
-  { to: '/visit', label: 'Visit' },
+  { to: '/inventory', label: 'The Collection', note: 'Pre-owned cars, trucks & SUVs' },
+  { to: '/glass', label: 'Auto Glass', note: 'Windshield, door & back glass' },
+  { to: '/financing', label: 'Financing', note: 'Easy credit, clear terms' },
+  { to: '/visit', label: 'Visit & Contact', note: '7722 Galveston Rd, Houston' },
 ];
 
-function Header() {
+function Header({ onMenu, lightTop }: { onMenu: () => void; lightTop: boolean }) {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
-  const location = useLocation();
+  const solid = scrolled || lightTop;
   const openNow = isOpenNow();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => setOpen(false), [location.pathname]);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-  }, [open]);
-
   return (
-    <header className={`header ${scrolled ? 'header--solid' : ''} ${open ? 'header--open' : ''}`}>
-      <div className="header__bar container">
+    <header className={`header ${solid ? 'header--solid' : ''}`}>
+      <div className="header__bar">
+        <button className="header__menu" onClick={onMenu} aria-haspopup="dialog" aria-controls="site-menu">
+          <IconMenu size={22} />
+          <span>Menu</span>
+        </button>
         <Link to="/" className="header__brand" aria-label="Vega's Auto Sales and Glass Co., home">
           <Wordmark compact />
         </Link>
-        <nav className="header__nav" aria-label="Primary">
-          {NAV.map((n) => (
-            <NavLink key={n.to} to={n.to} className="header__link">
-              {n.label}
-            </NavLink>
-          ))}
-        </nav>
-        <div className="header__actions">
+        <div className="header__tools">
           <span className={`status ${openNow ? 'status--open' : ''}`}>
             <span className="status__dot" />
             {openNow ? 'Open now' : 'Opens 9 AM'}
           </span>
-          <a className="btn btn--ghost btn--sm" href={business.phoneHref}>
-            {business.phoneDisplay}
+          <a className="header__icon" href={business.phoneHref} aria-label={`Call ${business.phoneDisplay}`}>
+            <IconPhone size={22} />
           </a>
-          <button
-            className="header__toggle"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            onClick={() => setOpen((o) => !o)}
-          >
-            <span />
-            <span />
-          </button>
-        </div>
-      </div>
-      <div id="mobile-nav" className="mobile-nav" hidden={!open}>
-        <nav aria-label="Mobile">
-          {NAV.map((n, i) => (
-            <NavLink key={n.to} to={n.to} className="mobile-nav__link" style={{ transitionDelay: `${0.05 * i + 0.1}s` }}>
-              {n.label}
-            </NavLink>
-          ))}
-        </nav>
-        <div className="mobile-nav__foot">
-          <a className="btn btn--gold" href={business.phoneHref}>
-            Call {business.phoneDisplay}
+          <a className="header__icon" href={business.mapsHref} target="_blank" rel="noreferrer" aria-label="Directions">
+            <IconPin size={22} />
           </a>
-          <p>
-            {business.street}, {business.cityLine}
-            <br />
-            Mon – Sat, 9 AM – 6 PM · Se habla español
-          </p>
         </div>
       </div>
     </header>
   );
 }
 
+function MenuDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const openNow = isOpenNow();
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (!open) return;
+    closeRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  return (
+    <div className={`drawer ${open ? 'drawer--open' : ''}`} aria-hidden={!open} inert={!open}>
+      <div className="drawer__scrim" onClick={onClose} />
+      <div className="drawer__panel" id="site-menu" role="dialog" aria-modal="true" aria-label="Menu">
+        <div className="drawer__top">
+          <button ref={closeRef} className="drawer__close" onClick={onClose} aria-label="Close menu">
+            <IconClose size={24} />
+          </button>
+          <Logo size={52} />
+        </div>
+        <nav className="drawer__nav" aria-label="Primary">
+          {NAV.map((n, i) => (
+            <NavLink key={n.to} to={n.to} className="drawer__link" style={{ transitionDelay: open ? `${0.06 * i + 0.12}s` : '0s' }}>
+              <span>
+                {n.label}
+                <small>{n.note}</small>
+              </span>
+              <IconArrowRight size={22} />
+            </NavLink>
+          ))}
+        </nav>
+        <div className="drawer__foot">
+          <a className="btn btn--primary btn--block" href={business.phoneHref}>
+            Call {business.phoneDisplay}
+          </a>
+          <a className="btn btn--outline btn--block" href={business.smsHref}>
+            Text us
+          </a>
+          <p>
+            <span className={`status status--ink ${openNow ? 'status--open' : ''}`}>
+              <span className="status__dot" />
+              {openNow ? 'Open now' : 'Closed now'}
+            </span>
+            <br />
+            Monday – Saturday, 9 AM – 6 PM
+            <br />
+            {business.street}, {business.cityLine}
+            <br />
+            Se habla español
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Footer() {
   return (
     <footer className="footer">
-      <div className="tricolor" aria-hidden="true" />
-      <div className="container footer__grid">
-        <div className="footer__brand">
-          <Wordmark />
-          <p className="footer__lede">
-            Pre-owned automobiles and auto glass on Galveston Road, held to one standard: what you see is exactly what you get.
-          </p>
-        </div>
-        <div>
-          <h4 className="eyebrow">Visit</h4>
-          <p>
-            {business.street}
-            <br />
-            {business.cityLine}
-            <br />
-            <span className="muted">{business.crossStreets}</span>
-          </p>
-          <a className="link-arrow" href={business.mapsHref} target="_blank" rel="noreferrer">
-            Directions
-          </a>
-        </div>
-        <div>
-          <h4 className="eyebrow">Hours</h4>
-          {business.hours.map((h) => (
-            <p key={h.days}>
-              {h.days}
+      <div className="container">
+        <button className="footer__up" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <IconArrowUp size={22} />
+          <span>Scroll up</span>
+        </button>
+
+        <div className="footer__grid">
+          <div>
+            <h2 className="footer__head">Visit</h2>
+            <p>
+              {business.street}
               <br />
-              <span className="muted">{h.time}</span>
+              {business.cityLine}
+              <br />
+              <span className="footer__mute">{business.crossStreets}</span>
             </p>
-          ))}
-        </div>
-        <div>
-          <h4 className="eyebrow">Contact</h4>
-          <p>
-            <a href={business.phoneHref}>{business.phoneDisplay}</a>
-            <br />
-            <a href={business.smsHref}>Text us</a>
-            <br />
-            <a href={business.facebookHref} target="_blank" rel="noreferrer">
+            <a className="footer__link" href={business.mapsHref} target="_blank" rel="noreferrer">
+              Get directions
+            </a>
+          </div>
+          <div>
+            <h2 className="footer__head">Hours</h2>
+            {business.hours.map((h) => (
+              <p key={h.days}>
+                {h.days}
+                <br />
+                <span className="footer__mute">{h.time}</span>
+              </p>
+            ))}
+          </div>
+          <div>
+            <h2 className="footer__head">Contact</h2>
+            <a className="footer__link" href={business.phoneHref}>
+              {business.phoneDisplay}
+            </a>
+            <a className="footer__link" href={business.smsHref}>
+              Text us
+            </a>
+            <a className="footer__link" href={business.facebookHref} target="_blank" rel="noreferrer">
               Facebook
             </a>
-          </p>
-          <p className="muted">Se habla español</p>
+            <p className="footer__mute">Se habla español</p>
+          </div>
+          <div>
+            <h2 className="footer__head">Explore</h2>
+            {NAV.map((n) => (
+              <Link key={n.to} className="footer__link" to={n.to}>
+                {n.label}
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
-      <div className="container footer__base">
-        <span>
-          <LoneStar size={11} /> © {new Date().getFullYear()} {business.name} All rights reserved.
-        </span>
-        <span className="muted">
-          Brand names referenced describe pre-owned vehicles we sell; Vega’s is an independent dealer. Prices exclude tax, title, license and fees.
-        </span>
+
+        <div className="footer__base">
+          <Logo size={44} />
+          <p>© {new Date().getFullYear()} {business.name}</p>
+          <p className="footer__mute">
+            Brand names describe pre-owned vehicles we sell; Vega’s is an independent dealer. Prices exclude tax, title, license and fees.
+          </p>
+        </div>
       </div>
     </footer>
   );
@@ -156,18 +188,29 @@ function ScrollToTop() {
 
 function MobileDock() {
   return (
-    <div className="dock">
-      <a href={business.phoneHref}>Call</a>
-      <a href={business.smsHref}>Text</a>
-      <Link to="/inventory">Inventory</Link>
+    <nav className="dock" aria-label="Quick contact">
+      <a href={business.phoneHref}>
+        <IconPhone size={20} />
+        Call
+      </a>
+      <a href={business.smsHref}>
+        <IconChat size={20} />
+        Text
+      </a>
       <a href={business.mapsHref} target="_blank" rel="noreferrer">
+        <IconPin size={20} />
         Directions
       </a>
-    </div>
+    </nav>
   );
 }
 
 export function Layout() {
+  const [menu, setMenu] = useState(false);
+  const close = useCallback(() => setMenu(false), []);
+  const location = useLocation();
+  useEffect(() => setMenu(false), [location.pathname]);
+
   return (
     <>
       <a href="#main" className="skip-link">
@@ -175,7 +218,8 @@ export function Layout() {
       </a>
       <Loader />
       <ScrollToTop />
-      <Header />
+      <Header onMenu={() => setMenu(true)} lightTop={/^\/inventory\/.+/.test(location.pathname)} />
+      <MenuDrawer open={menu} onClose={close} />
       <main id="main">
         <Outlet />
       </main>

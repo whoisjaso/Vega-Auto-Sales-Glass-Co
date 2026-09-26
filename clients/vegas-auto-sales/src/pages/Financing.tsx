@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { LeadForm } from '../components/LeadForm';
+import { PageHero } from '../components/PageHero';
+import { photos } from '../data/media';
 import { currency, vehicleTitle } from '../data/inventory';
 import { getVehicle } from '../lib/inventoryStore';
 import { useReveal } from '../lib/useReveal';
@@ -23,15 +25,15 @@ function Calculator({ initialPrice }: { initialPrice: number }) {
     <div className="calc calc--full">
       <div className="calc__out calc__out--top">
         <span className="calc__num">{currency(Math.round(monthly))}</span>
-        <span className="muted">/ month, estimated</span>
+        <span className="calc__per">/ month, estimated</span>
       </div>
       <label className="calc__row">
-        <span className="eyebrow">Vehicle price</span>
+        <span>Vehicle price</span>
         <strong>{currency(price)}</strong>
       </label>
       <input className="range" type="range" min={5000} max={70000} step={250} value={price} onChange={(e) => setPrice(Number(e.target.value))} aria-label="Vehicle price" />
       <label className="calc__row">
-        <span className="eyebrow">Down payment</span>
+        <span>Down payment</span>
         <strong>{currency(down)}</strong>
       </label>
       <input className="range" type="range" min={0} max={Math.round(price * 0.6)} step={250} value={Math.min(down, Math.round(price * 0.6))} onChange={(e) => setDown(Number(e.target.value))} aria-label="Down payment" />
@@ -63,41 +65,38 @@ export function Financing() {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <p className="eyebrow">Financing</p>
-          <h1 className="display display--xl">
-            The payment first. <em>Then the car.</em>
-          </h1>
-          <p className="section__lede">
-            First car, fresh start, or a trade-in with a balance: we work with real situations. Pre-qualify in two minutes. It won’t affect your credit to start the conversation.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="The payment first. Then the car."
+        lede="First car, fresh start, or a trade-in with a balance: we work with real situations. Starting the conversation won’t affect your credit."
+        kind="road"
+        body="SUV"
+        paint="#9ba1a8"
+        photo={photos['hero-credit']}
+      />
 
-      <section className="section section--tight">
+      <section className="band band--white">
         <div className="container split">
           <div className="reveal">
-            <h2 className="h3">Estimate your payment</h2>
+            <h2 className="band__title band__title--left">Estimate your payment</h2>
             <Calculator initialPrice={vehicle?.price ?? 18000} />
             <div className="pillars">
               <div>
                 <h3>Easy credit</h3>
-                <p className="muted">Limited or bruised credit is welcome here. Steady income goes a long way.</p>
+                <p>Limited or bruised credit is welcome here. Steady income goes a long way.</p>
               </div>
               <div>
                 <h3>Trade-ins</h3>
-                <p className="muted">Bring your current vehicle. We’ll appraise it and apply the value to your deal.</p>
+                <p>Bring your current vehicle. We’ll appraise it and apply the value to your deal.</p>
               </div>
               <div>
                 <h3>Clear terms</h3>
-                <p className="muted">You’ll see the payment, the term and the total before you sign anything.</p>
+                <p>You’ll see the payment, the term and the total before you sign anything.</p>
               </div>
             </div>
           </div>
-          <div className="card reveal">
+          <div className="form-card reveal">
             <h2 className="h3">Get pre-qualified</h2>
-            {vehicle && <p className="muted">For the {vehicleTitle(vehicle)} · {currency(vehicle.price)}</p>}
+            {vehicle && <p>For the {vehicleTitle(vehicle)} · {currency(vehicle.price)}</p>}
             <LeadForm
               type="pre-qualification"
               vehicle={vehicle ? `${vehicleTitle(vehicle)} · ${vehicle.stock}` : undefined}
