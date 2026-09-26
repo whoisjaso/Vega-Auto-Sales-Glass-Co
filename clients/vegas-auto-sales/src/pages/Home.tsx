@@ -225,7 +225,7 @@ function GlassBand() {
         {GLASS.map((g, i) => (
           <Link key={g.title} to="/glass" className="tile tile--glass reveal" style={{ transitionDelay: `${i * 0.07}s` }}>
             {photos[g.slot] ? (
-              <Scene kind="glass" photo={photos[g.slot]} alt={g.title} className="tile__scene" />
+              <Scene kind="glass" photo={photos[g.slot]} focus={photoFocus[g.slot]} alt={g.title} className="tile__scene" />
             ) : (
             <div className="tile__scene tile__scene--glass" aria-hidden="true">
               <svg viewBox="0 0 240 150">

@@ -50,6 +50,9 @@ export const photos: Partial<Record<PhotoSlot, string>> = {
   'body-sedan': '/photos/body-sedan.webp',
   'body-truck': '/photos/body-truck.webp',
   'body-coupe': '/photos/body-coupe.webp',
+  'glass-windshield': '/photos/glass-windshield.webp',
+  'glass-door': '/photos/glass-door.webp',
+  'glass-back': '/photos/glass-back.webp',
 };
 
 /** Where each banner's subject sits, so narrow screens crop to it. */
@@ -63,6 +66,9 @@ export const photoFocus: Partial<Record<PhotoSlot, string>> = {
   'body-sedan': '58% 55%',
   'body-truck': '58% 55%',
   'body-coupe': '58% 55%',
+  'glass-windshield': '52% 40%',
+  'glass-door': '58% 42%',
+  'glass-back': '42% 38%',
 };
 
 /** Where the hero photo's subject sits, so phones crop to it. */
