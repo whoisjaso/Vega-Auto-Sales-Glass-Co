@@ -6,7 +6,7 @@ import { IconArrowDown, IconArrowRight, IconSearch } from '../components/Icons';
 import { Scene } from '../components/Scene';
 import { business, isOpenNow } from '../data/business';
 import { currency, estimatePayment, vehicleTitle, type BodyStyle } from '../data/inventory';
-import { heroFocus, photos } from '../data/media';
+import { heroFocus, photos, type PhotoSlot } from '../data/media';
 import { getFeatured, getInventory } from '../lib/inventoryStore';
 import { useReveal } from '../lib/useReveal';
 
@@ -97,8 +97,8 @@ function Range() {
                   kind="studio"
                   body={r.body}
                   paint={r.paint}
-                  photo={cover?.photos?.[0]}
-                  alt={cover ? vehicleTitle(cover) : ''}
+                  photo={cover?.photos?.[0] ?? photos[`body-${r.body.toLowerCase()}` as PhotoSlot]}
+                  alt={cover ? vehicleTitle(cover) : r.name}
                   className="model__scene"
                 />
                 <span className="model__sig">{r.name}</span>

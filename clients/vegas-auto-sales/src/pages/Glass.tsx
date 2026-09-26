@@ -39,7 +39,7 @@ export function Glass() {
         title="Nothing between you and the road."
         lede="Auto glass replacement from the same team that sells your next car. We quote clearly, fit carefully and seal it right."
         kind="glass"
-        photo={photos['glass-band']}
+        photo={photos.glass}
       >
         <div className="page-hero__cta">
           <a href="#quote" className="btn btn--light">

@@ -13,9 +13,16 @@ export type PhotoSlot =
   | 'hero'
   /** Optional portrait crop of the same picture for phones. */
   | 'hero-mobile'
-  | 'hero-credit'
+  /** Inner page headers: wide, subject on the right, calm left side for the title. */
+  | 'inventory'
+  | 'glass'
+  | 'financing'
   | 'visit'
-  | 'glass-band';
+  /** Body-type cards on the home page (square). A real vehicle's photo wins when one exists. */
+  | 'body-suv'
+  | 'body-sedan'
+  | 'body-truck'
+  | 'body-coupe';
 
 export const photos: Partial<Record<PhotoSlot, string>> = {
   // Brand image, generated for the site (not a vehicle in stock).

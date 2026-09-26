@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { PageHero } from '../components/PageHero';
+import { photos } from '../data/media';
 import { VehicleCard } from '../components/VehicleCard';
 import type { BodyStyle } from '../data/inventory';
 import { getInventory } from '../lib/inventoryStore';
@@ -59,6 +60,7 @@ export function Inventory() {
         kind="studio"
         body="Sedan"
         paint="#15171b"
+        photo={photos.inventory}
       />
 
       <section className="band band--white band--tight">

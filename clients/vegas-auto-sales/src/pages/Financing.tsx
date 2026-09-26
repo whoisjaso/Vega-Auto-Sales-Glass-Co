@@ -71,7 +71,7 @@ export function Financing() {
         kind="road"
         body="SUV"
         paint="#9ba1a8"
-        photo={photos['hero-credit']}
+        photo={photos.financing}
       />
 
       <section className="band band--white">

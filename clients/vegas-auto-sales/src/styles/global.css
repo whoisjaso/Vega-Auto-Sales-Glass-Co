@@ -2518,3 +2518,53 @@ button.chip--on {
     transform: none;
   }
 }
+
+/* ---------- Title Case ----------
+   Every word capitalised ("Aa") on headings, subtitles, actions, navigation,
+   labels and card titles, as the sale desk does. Body copy (paragraphs,
+   reviews, fine print, form help) stays in sentence case for reading. */
+h1,
+h2,
+h3,
+.hero__lede,
+.page-hero__lede,
+.finder__lede,
+.lede,
+.glass-band__copy p,
+.split-card__text p,
+.tile__label,
+.tile__type,
+.model__sig,
+.model__line,
+.model__price,
+.chip,
+.btn,
+.text-link,
+.header__menu,
+.status,
+.drawer__link,
+.drawer__foot p,
+.footer__up,
+.footer__link,
+.footer__head,
+.dock a,
+.search__label,
+.field > span,
+.vcard__make,
+.vcard__meta,
+.detail__make,
+.detail__price span,
+.crumbs,
+.caption,
+.results,
+.specs dt,
+.facts dt,
+.calc__row span,
+.calc__per,
+.glass-reveal__label,
+.stage__note,
+.quote figcaption,
+.quote-card figcaption,
+.pillars h3 {
+  text-transform: capitalize;
+}
