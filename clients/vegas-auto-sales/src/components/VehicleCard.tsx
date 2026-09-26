@@ -8,7 +8,7 @@ export function VehicleStage({ v, large = false }: { v: Vehicle; large?: boolean
   return (
     <div className={`stage ${large ? 'stage--large' : ''}`}>
       {v.photos?.length ? (
-        <img src={v.photos[0]} alt={vehicleTitle(v)} loading="lazy" />
+        <img src={v.photos[0]} alt={vehicleTitle(v)} loading="lazy" style={v.coverFocus ? { objectPosition: v.coverFocus } : undefined} />
       ) : (
         <>
           <CarSilhouette body={v.body} paint={v.paint} className="stage__car" title={vehicleTitle(v)} />
@@ -27,7 +27,7 @@ export function VehicleCard({ v, index = 0 }: { v: Vehicle; index?: number }) {
         <div className="vcard__body">
           <p className="vcard__make">{v.make}</p>
           <h3 className="vcard__title">
-            {v.year} {v.model}
+            {v.year ? `${v.year} ` : ''}{v.model}
             {v.trim && <span> {v.trim}</span>}
           </h3>
           {metaLine(v) && <p className="vcard__meta">{metaLine(v)}</p>}

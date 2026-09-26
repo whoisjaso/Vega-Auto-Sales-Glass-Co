@@ -32,13 +32,13 @@ export function Inventory() {
       (v) =>
         (body === 'All' || v.body === body) &&
         (make === 'All' || v.make === make) &&
-        (!needle || `${v.year} ${v.make} ${v.model} ${v.trim ?? ''} ${v.exterior ?? ''}`.toLowerCase().includes(needle)),
+        (!needle || `${v.year ?? ''} ${v.make} ${v.model} ${v.trim ?? ''} ${v.exterior ?? ''}`.toLowerCase().includes(needle)),
     );
     const sorted = [...filtered];
     if (sort === 'price-asc') sorted.sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity));
     if (sort === 'price-desc') sorted.sort((a, b) => (b.price ?? -1) - (a.price ?? -1));
     if (sort === 'miles-asc') sorted.sort((a, b) => (a.mileage ?? Infinity) - (b.mileage ?? Infinity));
-    if (sort === 'year-desc') sorted.sort((a, b) => b.year - a.year);
+    if (sort === 'year-desc') sorted.sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
     if (sort === 'featured') sorted.sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
     return sorted;
   }, [all, body, make, q, sort]);

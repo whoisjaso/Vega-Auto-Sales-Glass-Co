@@ -57,9 +57,9 @@ function Teasers() {
       <div className="container teasers">
         {picks.map((v, i) => (
           <Link key={v.slug} to={`/inventory/${v.slug}`} className="tile reveal" style={{ transitionDelay: `${i * 0.07}s` }}>
-            <Scene kind="studio" body={v.body} paint={v.paint} photo={v.photos?.[0]} alt={vehicleTitle(v)} className="tile__scene" />
+            <Scene kind="studio" body={v.body} paint={v.paint} photo={v.photos?.[0]} focus={v.coverFocus} alt={vehicleTitle(v)} className="tile__scene" />
             <span className="tile__label">
-              {v.year} {v.make} {v.model}.
+              {vehicleTitle(v)}.
             </span>
             <span className="arrow-btn" aria-hidden="true">
               <IconArrowRight size={18} />
@@ -87,25 +87,27 @@ function Range() {
         <div className="lineup">
           {RANGE.map((r, i) => {
             const units = all.filter((v) => v.body === r.body);
-            if (!units.length) return null;
             const priced = units.map((v) => v.price).filter((p): p is number => !!p);
             const from = priced.length ? Math.min(...priced) : undefined;
-            const cover = units.find((v) => v.photos?.length);
+            // The category card keeps the art-directed showroom image so the four
+            // cards match; a real vehicle's photo is the fallback when none exists.
+            const slot = `body-${r.body.toLowerCase()}` as PhotoSlot;
+            const cover = photos[slot] ? undefined : units.find((v) => v.photos?.length);
             return (
               <Link key={r.body} to={`/inventory?body=${r.body}`} className="model reveal" style={{ transitionDelay: `${(i % 2) * 0.08}s` }}>
                 <Scene
                   kind="studio"
                   body={r.body}
                   paint={r.paint}
-                  photo={cover?.photos?.[0] ?? photos[`body-${r.body.toLowerCase()}` as PhotoSlot]}
-                  focus={cover ? undefined : photoFocus[`body-${r.body.toLowerCase()}` as PhotoSlot]}
+                  photo={photos[slot] ?? cover?.photos?.[0]}
+                  focus={photos[slot] ? photoFocus[slot] : undefined}
                   alt={cover ? vehicleTitle(cover) : r.name}
                   className="model__scene"
                 />
                 <span className="model__sig">{r.name}</span>
                 <span className="model__body">
                   <span className="chips chips--frost">
-                    <span className="chip">{units.length} in stock</span>
+                    <span className="chip">{units.length ? `${units.length} in stock` : 'Ask about availability'}</span>
                     {from && <span className="chip">From {currency(estimatePayment(from))}/mo</span>}
                   </span>
                   <span className="model__line">{r.line}</span>
@@ -174,7 +176,7 @@ function Finder() {
             </label>
             <div className="search__field">
               <IconSearch size={20} />
-              <input id="finder-q" type="search" placeholder="e.g. Tahoe, BMW, white" value={q} onChange={(e) => setQ(e.target.value)} />
+              <input id="finder-q" type="search" placeholder="e.g. GMC, Acura, silver" value={q} onChange={(e) => setQ(e.target.value)} />
               <button type="submit" className="btn btn--primary btn--sm">
                 Search
               </button>

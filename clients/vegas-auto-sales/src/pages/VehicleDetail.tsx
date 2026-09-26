@@ -2,11 +2,44 @@ import { Link, useParams } from 'react-router-dom';
 import { LeadForm } from '../components/LeadForm';
 import { PageHero } from '../components/PageHero';
 import { photos } from '../data/media';
+import { useState } from 'react';
 import { VehicleCard, VehicleStage } from '../components/VehicleCard';
 import { business } from '../data/business';
-import { currency, estimatePayment, miles, priceLabel, vehicleTitle } from '../data/inventory';
+import { currency, estimatePayment, miles, priceLabel, vehicleTitle, type Vehicle } from '../data/inventory';
 import { getInventory, getVehicle } from '../lib/inventoryStore';
 import { useReveal } from '../lib/useReveal';
+
+/** The main photo with a thumbnail strip beneath it; drawn stage when there are no photos. */
+function Gallery({ v }: { v: Vehicle }) {
+  const [active, setActive] = useState(0);
+  const list = v.photos ?? [];
+  if (list.length < 2) return <VehicleStage v={v} large />;
+  return (
+    <div className="gallery">
+      <div className="stage stage--large">
+        <img
+          src={list[active]}
+          alt={`${vehicleTitle(v)}, photo ${active + 1} of ${list.length}`}
+          style={active === 0 && v.coverFocus ? { objectPosition: v.coverFocus } : undefined}
+        />
+      </div>
+      <div className="gallery__thumbs" role="list">
+        {list.map((src, i) => (
+          <button
+            key={src}
+            role="listitem"
+            className={`gallery__thumb ${i === active ? 'is-active' : ''}`}
+            onClick={() => setActive(i)}
+            aria-label={`Show photo ${i + 1}`}
+            aria-current={i === active}
+          >
+            <img src={src} alt="" loading="lazy" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function VehicleDetail() {
   const { slug = '' } = useParams();
@@ -48,12 +81,12 @@ export function VehicleDetail() {
           </nav>
           <div className="detail__grid">
             <div>
-              <VehicleStage v={v} large />
+              <Gallery v={v} />
             </div>
             <aside className="detail__panel">
               <p className="detail__make">{v.make}</p>
               <h1 className="detail__title">
-                {v.year} {v.model}
+                {v.year ? `${v.year} ` : ''}{v.model}
                 {v.trim && <span> {v.trim}</span>}
               </h1>
               <div className="detail__price">
