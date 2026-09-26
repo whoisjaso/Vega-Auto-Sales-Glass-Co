@@ -755,8 +755,8 @@ button {
 
 .hero__scene .scene__shade {
   background:
-    linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 50%),
-    linear-gradient(to right, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 55%);
+    linear-gradient(to top, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0) 50%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.12) 40%, rgba(0, 0, 0, 0) 58%);
 }
 
 .hero .scene__set,
@@ -777,12 +777,12 @@ button {
   position: absolute;
   inset: auto 0 clamp(104px, 15vh, 160px);
   z-index: 2;
-  max-width: var(--max);
+  max-width: none;
 }
 
 .hero__title {
   margin: 0 0 30px;
-  font-size: clamp(48px, 7.2vw, 104px);
+  font-size: clamp(46px, 5.6vw, 92px);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.012em;
@@ -815,7 +815,7 @@ button {
 }
 
 .hero__lede {
-  max-width: 520px;
+  max-width: 440px;
   margin: -12px 0 28px;
   font-size: 19px;
   color: #e6e7e8;

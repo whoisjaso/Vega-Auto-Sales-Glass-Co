@@ -25,15 +25,15 @@ function Hero() {
         photoMobile={photos['hero-mobile']}
         focus={heroFocus}
         eager
-        alt="A pickup truck at Vega's Auto Sales"
+        alt="A black pickup truck parked at sunset"
         className="hero__scene"
       />
       <div className="hero__copy container">
         <h1 className="hero__title">
-          <span>Trucks, cars & SUVs.</span>
-          <span>Easy credit.</span>
+          <span>Trucks, cars</span>
+          <span>& SUVs.</span>
         </h1>
-        <p className="hero__lede">Pre-owned vehicles and auto glass at 7722 Galveston Road, Houston.</p>
+        <p className="hero__lede">Easy credit and auto glass at 7722 Galveston Road, Houston.</p>
         <div className="hero__cta">
           <Link to="/inventory" className="btn btn--light">
             Explore the inventory

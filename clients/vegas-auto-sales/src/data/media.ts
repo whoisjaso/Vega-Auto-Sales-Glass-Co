@@ -17,7 +17,11 @@ export type PhotoSlot =
   | 'visit'
   | 'glass-band';
 
-export const photos: Partial<Record<PhotoSlot, string>> = {};
+export const photos: Partial<Record<PhotoSlot, string>> = {
+  // Brand image, generated for the site (not a vehicle in stock).
+  hero: '/photos/hero-truck.webp',
+  'hero-mobile': '/photos/hero-truck-mobile.webp',
+};
 
 /** Where the hero photo's subject sits, so phones crop to it. */
-export const heroFocus = '68% 55%';
+export const heroFocus = '72% 50%';
