@@ -6,7 +6,7 @@ import { IconArrowDown, IconArrowRight, IconSearch } from '../components/Icons';
 import { Scene } from '../components/Scene';
 import { business, isOpenNow } from '../data/business';
 import { currency, estimatePayment, vehicleTitle, type BodyStyle } from '../data/inventory';
-import { heroFocus, photos, type PhotoSlot } from '../data/media';
+import { heroFocus, photoFocus, photos, type PhotoSlot } from '../data/media';
 import { getFeatured, getInventory } from '../lib/inventoryStore';
 import { useReveal } from '../lib/useReveal';
 
@@ -98,6 +98,7 @@ function Range() {
                   body={r.body}
                   paint={r.paint}
                   photo={cover?.photos?.[0] ?? photos[`body-${r.body.toLowerCase()}` as PhotoSlot]}
+                  focus={cover ? undefined : photoFocus[`body-${r.body.toLowerCase()}` as PhotoSlot]}
                   alt={cover ? vehicleTitle(cover) : r.name}
                   className="model__scene"
                 />
@@ -147,7 +148,7 @@ function VisitCard() {
               Get directions
             </a>
           </div>
-          <Scene kind="dusk" photo={photos.visit} alt="Vega's on Galveston Road" className="split-card__scene" />
+          <Scene kind="dusk" photo={photos.visit} focus={photoFocus.visit} alt="A car lot at dusk" className="split-card__scene" />
         </div>
       </div>
     </section>

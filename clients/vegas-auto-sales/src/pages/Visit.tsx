@@ -2,7 +2,7 @@ import { LeadForm } from '../components/LeadForm';
 import { PageHero } from '../components/PageHero';
 import { Scene } from '../components/Scene';
 import { business, isOpenNow } from '../data/business';
-import { photos } from '../data/media';
+import { photoFocus, photos } from '../data/media';
 import { useReveal } from '../lib/useReveal';
 
 export function Visit() {
@@ -15,6 +15,7 @@ export function Visit() {
         lede="Walk the lot, sit in the car, bring your vehicle in for glass. We’re on Galveston Road six days a week."
         kind="dusk"
         photo={photos.visit}
+        focus={photoFocus.visit}
       />
 
       <section className="band band--white">
@@ -59,7 +60,7 @@ export function Visit() {
                 </a>
               </div>
             </div>
-            <Scene kind="dusk" photo={photos.visit} alt="Vega's on Galveston Road" className="split-card__scene" />
+            <Scene kind="dusk" photo={photos.visit} focus={photoFocus.visit} alt="A car lot at dusk" className="split-card__scene" />
           </div>
         </div>
       </section>

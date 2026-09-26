@@ -43,6 +43,10 @@ export const photos: Partial<Record<PhotoSlot, string>> = {
   inventory: '/photos/inventory.webp',
   glass: '/photos/glass.webp',
   financing: '/photos/financing.webp',
+  // Generated stand-in: replace with a real photo of 7722 Galveston Rd.
+  visit: '/photos/visit.webp',
+  'not-found': '/photos/not-found.webp',
+  'body-suv': '/photos/body-suv.webp',
 };
 
 /** Where each banner's subject sits, so narrow screens crop to it. */
@@ -50,6 +54,9 @@ export const photoFocus: Partial<Record<PhotoSlot, string>> = {
   inventory: '72% 60%',
   glass: '78% 45%',
   financing: '62% 60%',
+  visit: '45% 58%',
+  'not-found': '40% 55%',
+  'body-suv': '56% 55%',
 };
 
 /** Where the hero photo's subject sits, so phones crop to it. */

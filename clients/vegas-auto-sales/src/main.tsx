@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { PageHero } from './components/PageHero';
-import { photos } from './data/media';
+import { photoFocus, photos } from './data/media';
 import { Financing } from './pages/Financing';
 import { Glass } from './pages/Glass';
 import { Home } from './pages/Home';
@@ -18,7 +18,7 @@ import './styles/global.css';
 
 function NotFound() {
   return (
-    <PageHero title="Wrong turn off Galveston Road." kind="road" body="Sedan" paint="#15171b" photo={photos['not-found']}>
+    <PageHero title="Wrong turn off Galveston Road." kind="road" body="Sedan" paint="#15171b" photo={photos['not-found']} focus={photoFocus['not-found']}>
       <Link to="/" className="btn btn--frost">
         Return home
       </Link>
