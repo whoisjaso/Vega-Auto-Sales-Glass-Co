@@ -181,19 +181,25 @@ function Finder() {
           </form>
         </div>
         <div className="finder__cars" aria-hidden="true">
-          <CarSilhouette body="SUV" paint="#f5f5f4" className="finder__car finder__car--1" />
-          <CarSilhouette body="Sedan" paint="#f5f5f4" className="finder__car finder__car--2" />
-          <CarSilhouette body="Truck" paint="#f5f5f4" className="finder__car finder__car--3" />
+          {photos.finder ? (
+            <img className="finder__photo" src={photos.finder} alt="" loading="lazy" decoding="async" />
+          ) : (
+            <>
+              <CarSilhouette body="SUV" paint="#f5f5f4" className="finder__car finder__car--1" />
+              <CarSilhouette body="Sedan" paint="#f5f5f4" className="finder__car finder__car--2" />
+              <CarSilhouette body="Truck" paint="#f5f5f4" className="finder__car finder__car--3" />
+            </>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-const GLASS = [
-  { title: 'Windshields', path: 'M20 40 C60 18 180 18 220 40 L234 128 C165 138 75 138 6 128 Z' },
-  { title: 'Door & quarter glass', path: 'M40 130 L40 60 C40 40 60 26 90 26 L200 26 L200 130 Z' },
-  { title: 'Back glass', path: 'M30 44 C80 28 160 28 210 44 L222 118 C160 128 80 128 18 118 Z' },
+const GLASS: { title: string; slot: PhotoSlot; path: string }[] = [
+  { title: 'Windshields', slot: 'glass-windshield', path: 'M20 40 C60 18 180 18 220 40 L234 128 C165 138 75 138 6 128 Z' },
+  { title: 'Door & quarter glass', slot: 'glass-door', path: 'M40 130 L40 60 C40 40 60 26 90 26 L200 26 L200 130 Z' },
+  { title: 'Back glass', slot: 'glass-back', path: 'M30 44 C80 28 160 28 210 44 L222 118 C160 128 80 128 18 118 Z' },
 ];
 
 function GlassBand() {
@@ -210,13 +216,16 @@ function GlassBand() {
           </Link>
         </div>
         <div className="glass-band__demo reveal">
-          <GlassReveal />
+          <GlassReveal before={photos['glass-before']} after={photos['glass-after']} />
           <p className="caption">Drag across the glass to compare.</p>
         </div>
       </div>
       <div className="container teasers teasers--dark">
         {GLASS.map((g, i) => (
           <Link key={g.title} to="/glass" className="tile tile--glass reveal" style={{ transitionDelay: `${i * 0.07}s` }}>
+            {photos[g.slot] ? (
+              <Scene kind="glass" photo={photos[g.slot]} alt={g.title} className="tile__scene" />
+            ) : (
             <div className="tile__scene tile__scene--glass" aria-hidden="true">
               <svg viewBox="0 0 240 150">
                 <defs>
@@ -240,6 +249,7 @@ function GlassBand() {
                 </g>
               </svg>
             </div>
+            )}
             <span className="tile__label">{g.title}</span>
             <span className="arrow-btn" aria-hidden="true">
               <IconArrowRight size={18} />

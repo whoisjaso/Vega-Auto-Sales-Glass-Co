@@ -16,8 +16,12 @@ const CRACKS = [
 ];
 const RING = 'M226 110 L236 104 L250 108 L252 122 L244 130 L230 129 L224 120 Z';
 
-/** Drag-to-restore windshield: shattered on the left of the handle, pristine on the right. */
-export function GlassReveal() {
+/**
+ * Drag-to-restore windshield: shattered on the left of the handle, pristine on
+ * the right. With `before` and `after` photographs (the same frame, cracked and
+ * replaced) it compares the photos; without them it draws the glass.
+ */
+export function GlassReveal({ before, after }: { before?: string; after?: string } = {}) {
   const [pos, setPos] = useState(52);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -38,8 +42,23 @@ export function GlassReveal() {
 
   const windshield = 'M40 70 C120 30 360 30 440 70 L468 250 C330 268 150 268 12 250 Z';
 
+  const photo = !!(before && after);
+
   return (
-    <div className="glass-reveal" ref={ref} onPointerDown={onPointerDown} onPointerMove={onPointerMove}>
+    <div className={`glass-reveal ${photo ? 'glass-reveal--photo' : ''}`} ref={ref} onPointerDown={onPointerDown} onPointerMove={onPointerMove}>
+      {photo ? (
+        <>
+          <img className="glass-reveal__img" src={after} alt="" draggable={false} loading="lazy" />
+          <img
+            className="glass-reveal__img"
+            src={before}
+            alt=""
+            draggable={false}
+            loading="lazy"
+            style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+          />
+        </>
+      ) : (
       <svg viewBox="0 0 480 290" className="glass-reveal__svg" aria-hidden="true">
         <defs>
           <linearGradient id="ws-tint" x1="0" y1="0" x2="0" y2="1">
@@ -89,6 +108,7 @@ export function GlassReveal() {
 
         <path d={windshield} fill="none" stroke="#3a3e43" strokeWidth="2" />
       </svg>
+      )}
 
       <div className="glass-reveal__handle" style={{ left: `${pos}%` }}>
         <span className="glass-reveal__knob" aria-hidden="true">

@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { LeadForm } from '../components/LeadForm';
 import { PageHero } from '../components/PageHero';
+import { photos } from '../data/media';
 import { VehicleCard, VehicleStage } from '../components/VehicleCard';
 import { business } from '../data/business';
 import { currency, estimatePayment, miles, priceLabel, vehicleTitle } from '../data/inventory';
@@ -14,7 +15,7 @@ export function VehicleDetail() {
 
   if (!v) {
     return (
-      <PageHero title="This one has already left the lot." kind="studio" body="Coupe" paint="#15171b">
+      <PageHero title="This one has already left the lot." kind="studio" body="Coupe" paint="#15171b" photo={photos.inventory}>
         <Link to="/inventory" className="btn btn--frost">
           Back to the Collection
         </Link>

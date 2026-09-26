@@ -58,7 +58,7 @@ export function Glass() {
             <p>A stone strike spreads fast in Houston heat. Drag across the windshield to compare a cracked pane with a clean replacement.</p>
           </div>
           <div className="glass-band__demo reveal">
-            <GlassReveal />
+            <GlassReveal before={photos['glass-before']} after={photos['glass-after']} />
             <p className="caption">Drag across the glass to compare.</p>
           </div>
         </div>

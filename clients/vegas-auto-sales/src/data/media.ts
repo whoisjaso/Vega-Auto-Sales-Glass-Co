@@ -22,7 +22,18 @@ export type PhotoSlot =
   | 'body-suv'
   | 'body-sedan'
   | 'body-truck'
-  | 'body-coupe';
+  | 'body-coupe'
+  /** The three glass tiles on the home page (4:3). */
+  | 'glass-windshield'
+  | 'glass-door'
+  | 'glass-back'
+  /** The drag-to-compare windshield: the same frame, cracked and replaced (5:3). */
+  | 'glass-before'
+  | 'glass-after'
+  /** Vehicles on white beside the inventory search (transparent PNG). */
+  | 'finder'
+  /** The 404 page. */
+  | 'not-found';
 
 export const photos: Partial<Record<PhotoSlot, string>> = {
   // Brand image, generated for the site (not a vehicle in stock).
