@@ -1,5 +1,5 @@
 import { factOr } from "@/lib/dealership-config";
-import { dealership, SITE_URL } from '@/lib/dealership-config';
+import { dealership, notSet, SITE_URL, SITE_URL_CONFIGURED } from '@/lib/dealership-config';
 
 /**
  * Dealer identity on a document.
@@ -15,7 +15,8 @@ import { dealership, SITE_URL } from '@/lib/dealership-config';
 export const DEALER_NAME = factOr(dealership.legalName, "dealer legal name");
 export const DEALER_ADDRESS = dealership.address.oneLine;
 export const DEALER_PHONE = dealership.phone.display;
-export const DEALER_WEBSITE = SITE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
+// Printed on paper: the configured domain, or its visible marker (never the dev host).
+export const DEALER_WEBSITE = SITE_URL_CONFIGURED ? SITE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '') : notSet('website domain');
 export const DEALER_LICENSE = factOr(dealership.license, "dealer licence (GDN)");
 
 export interface SignatureData {

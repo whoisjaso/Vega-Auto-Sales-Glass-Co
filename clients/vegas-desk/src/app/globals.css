@@ -13696,3 +13696,32 @@ html[data-walk-dir="back"]::view-transition-new(walk-stage) {
   font-weight: 600;
   color: var(--tj-copper);
 }
+
+/* Vega's: the kept-signature panel is paper (it shows the buyer's ink stroke),
+   so everything written on it is set in paper ink, not the screen's ivory. */
+.ed-sign-kept,
+.ed-sign-kept .ed-sign-consent {
+  color: #111111;
+}
+
+.ed-sign-kept .ed-sign-consent input {
+  accent-color: #111111;
+}
+
+.ed-sign-kept .ed-guide-back {
+  color: #4a4a45;
+}
+
+/* Vega's: surfaces that are deliberately white paper on screen (the signing
+   pad in the ceremony, the kept-signature panel) take the paper values for
+   every role, so any text set on them stays legible (AA on white). */
+.ed-sign-pad-box,
+.ed-sign-kept {
+  --tj-ink: #111111;
+  --tj-muted: #4a4a45;
+  --tj-muted-light: #5f5c54;
+  --tj-line: #d2d2cc;
+  --tj-plane: #ffffff;
+  --tj-surface: #ffffff;
+  color: #111111;
+}

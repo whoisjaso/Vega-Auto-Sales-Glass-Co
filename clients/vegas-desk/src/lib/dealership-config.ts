@@ -229,6 +229,7 @@ export function missingDealerFacts(): string[] {
   if (!dealership.county) missing.push("County");
   if (dealerFees.docFee === null || !Number.isFinite(dealerFees.docFee)) missing.push("Documentary fee");
   if (!dealership.signer.name) missing.push("Authorised signer");
+  if (!SITE_URL_CONFIGURED) missing.push("Website domain");
   return missing;
 }
 
@@ -366,7 +367,8 @@ export const brand = {
   logo: env(process.env.NEXT_PUBLIC_BRAND_LOGO),
   logoPrint: env(process.env.BRAND_LOGO_PRINT),
 
-  host: HOST,
+  /** The website as printed on paper; a marker until the domain is supplied. */
+  host: SITE_URL_CONFIGURED ? HOST : notSet("website domain"),
 
   /** Mail stays unsent until a verified sending domain is configured. */
   mailFrom: env(process.env.RESEND_FROM_EMAIL) ?? `documents@${MAIL_HOST}`,
