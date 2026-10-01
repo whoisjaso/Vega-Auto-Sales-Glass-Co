@@ -28,6 +28,12 @@ paper and its customers drive to the address on the site:
   are brand and mood only (no badges, no plates). Vehicles for sale, the lot,
   staff and customers are real photos. See `references/image-brief.md`.
 
+## Kicking off a new client
+
+`NEW-CLIENT-PROMPT.md` is the fill-in-the-blanks message the user pastes to
+start a new build. When it arrives, follow it: it names this skill and the
+facts to collect.
+
 ## Start from the last build, not from zero
 
 Copy `clients/vegas-auto-sales` → `clients/<client>-site` and

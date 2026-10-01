@@ -476,6 +476,11 @@ button {
   transform: translateX(4px);
 }
 
+.drawer__link--admin {
+  font-size: clamp(22px, 2.4vw, 26px);
+  color: var(--mute);
+}
+
 .drawer__foot {
   display: grid;
   gap: 10px;

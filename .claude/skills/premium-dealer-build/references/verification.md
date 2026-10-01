@@ -39,6 +39,7 @@ look at the screenshots yourself, then send the user a few of them.
 
 The public site is a static Vite build: deploy `clients/<client>-site` as its own
 Vercel project (framework Vite, output `dist`, the SPA rewrite in
-`vercel.json`). The desk needs its own Supabase project, the migration applied
+`vercel.json`). Once the desk is live, set `VITE_DESK_URL` on the
+site's Vercel project and redeploy so the menu shows the Admin link. The desk needs its own Supabase project, the migration applied
 and its secrets set before it is deployed; until then say so rather than
 shipping a desk that errors on every screen.

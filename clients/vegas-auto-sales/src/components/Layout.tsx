@@ -5,6 +5,10 @@ import { Logo, Wordmark } from './Brand';
 import { IconArrowRight, IconArrowUp, IconChat, IconClose, IconMenu, IconPhone, IconPin } from './Icons';
 import { Loader } from './Loader';
 
+// The sale desk is its own app; the menu links to its sign-in once it is deployed.
+const deskUrl = (import.meta.env.VITE_DESK_URL as string | undefined)?.replace(/\/+$/, '');
+const adminHref = deskUrl ? `${deskUrl}/admin/login` : null;
+
 const NAV = [
   { to: '/inventory', label: 'The Collection', note: 'Pre-owned cars, trucks & SUVs' },
   { to: '/glass', label: 'Auto Glass', note: 'Windshield, door & back glass' },
@@ -84,6 +88,19 @@ function MenuDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
               <IconArrowRight size={22} />
             </NavLink>
           ))}
+          {adminHref && (
+            <a
+              href={adminHref}
+              className="drawer__link drawer__link--admin"
+              style={{ transitionDelay: open ? `${0.06 * NAV.length + 0.12}s` : '0s' }}
+            >
+              <span>
+                Admin
+                <small>Staff sign-in to the sale desk</small>
+              </span>
+              <IconArrowRight size={22} />
+            </a>
+          )}
         </nav>
         <div className="drawer__foot">
           <a className="btn btn--primary btn--block" href={business.phoneHref}>

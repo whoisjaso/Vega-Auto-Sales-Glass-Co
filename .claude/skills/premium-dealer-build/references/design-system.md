@@ -36,7 +36,10 @@ and change only the brand inputs.
    logo + NAME in wide caps (letter-spacing .42em) centred, open-now dot +
    call + directions right. Turns white/frosted after 40px of scroll (or at
    once on pages without a dark hero). Menu opens a left **drawer**: big
-   links with one-line notes, call/text buttons, hours.
+   links with one-line notes, then a quieter **Admin** link ("Staff sign-in to
+   the sale desk") to `VITE_DESK_URL` + `/admin/login`, call/text buttons,
+   hours. The Admin link is hidden until `VITE_DESK_URL` is set, so a site
+   never ships a dead link before its desk is deployed.
 2. **Hero**: ONE fixed full-screen photograph (like thetriplejauto.com and
    Porsche), not a carousel. Subject right of centre, calm left side; the
    headline (2 short lines) is pinned to the left gutter at every width so it
