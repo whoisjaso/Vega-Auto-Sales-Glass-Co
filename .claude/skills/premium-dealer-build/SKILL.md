@@ -1,6 +1,16 @@
 ---
 name: premium-dealer-build
-description: End-to-end playbook for onboarding a new car dealership client: research the dealer's real facts, build a Porsche-grade public website (fixed hero photo, black-and-white marque design, Title Case, real inventory), write the ChatGPT image-generation brief for the team and place the returned images, and port the Handle A Sale admin sale desk (Next.js + Supabase, Texas paperwork, e-signing) in the same theme, then verify and deploy. Use this whenever the user onboards a dealership or auto business, asks to "do what we did for Vega's" or Triple J, wants a luxury dealer site, a sale desk / admin dashboard for a dealer, image prompts for a dealer site, or to load a dealer's Facebook inventory, even if they only name one of those parts.
+description: >-
+  End-to-end playbook for onboarding a new car dealership client: research the
+  dealer's real facts, build a Porsche-grade public website (fixed hero photo,
+  black-and-white marque design, Title Case, real inventory), write the
+  ChatGPT image-generation brief for the team and place the returned images,
+  and port the Handle A Sale admin sale desk (Next.js + Supabase, Texas
+  paperwork, e-signing) in the same theme, then verify and deploy. Use this
+  whenever the user onboards a dealership or auto business, asks to "do what
+  we did for Vega's" or Triple J, wants a luxury dealer site, a sale desk /
+  admin dashboard for a dealer, image prompts for a dealer site, or to load a
+  dealer's Facebook inventory, even if they only name one of those parts.
 ---
 
 # Premium dealer build
@@ -27,6 +37,19 @@ paper and its customers drive to the address on the site:
 - **Never pass off a generated image as the dealer's.** Generated pictures
   are brand and mood only (no badges, no plates). Vehicles for sale, the lot,
   staff and customers are real photos. See `references/image-brief.md`.
+
+## Where the templates live
+
+The Vega's templates are in the GitHub repo `whoisjaso/xlnc-perception`:
+`clients/vegas-auto-sales` (site) and `clients/vegas-desk` (desk), on `main`
+once whoisjaso/xlnc-perception#2 is merged, until then on the branch
+`claude/vegas-auto-sales-website-rckarz`.
+
+- In a Claude Code session on that repo, copy the folders directly.
+- In any other session, clone the repo (or attach it) first. If the repo
+  can't be reached, the public site template is bundled in this skill at
+  `assets/site-template/` (source only: add the client's logo and photos);
+  the desk always needs the repo, because it is too large to bundle.
 
 ## Kicking off a new client
 
