@@ -1,7 +1,7 @@
 # New client prompt
 
 Paste everything below the line into a new Claude Code session on
-`whoisjaso/xlnc-perception`. Fill in the brackets; leave a line as
+`whoisjaso/Vega-Auto-Sales-Glass-Co`. Fill in the brackets; leave a line as
 `unknown` when you don't have it (never guess: the build marks it missing).
 Attach the logo file and any Facebook collages or lot photos with the message.
 

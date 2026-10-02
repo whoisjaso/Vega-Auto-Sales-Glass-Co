@@ -17,7 +17,7 @@ description: >-
 
 This is the repeatable version of the Vega's Auto Sales & Glass Co. build
 (`clients/vegas-auto-sales` = public site, `clients/vegas-desk` = sale desk,
-PR whoisjaso/xlnc-perception#2). A new client gets the same three things:
+PR #2 in `whoisjaso/Vega-Auto-Sales-Glass-Co`). A new client gets the same three things:
 
 1. **A public website** that feels like porsche.com/usa: one fixed hero photo,
    black and white with the client's logo as the only colour, one narrow
@@ -40,9 +40,10 @@ paper and its customers drive to the address on the site:
 
 ## Where the templates live
 
-The Vega's templates are in the GitHub repo `whoisjaso/xlnc-perception`:
+The Vega's templates are in the GitHub repo `whoisjaso/Vega-Auto-Sales-Glass-Co`
+(formerly `whoisjaso/xlnc-perception`; GitHub redirects the old name):
 `clients/vegas-auto-sales` (site) and `clients/vegas-desk` (desk), on `main`
-once whoisjaso/xlnc-perception#2 is merged, until then on the branch
+once PR #2 in that repo is merged, until then on the branch
 `claude/vegas-auto-sales-website-rckarz`.
 
 - In a Claude Code session on that repo, copy the folders directly.
